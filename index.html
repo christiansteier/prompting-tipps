@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompting-Tipps fürs Studium</title>
+<meta name="description" content="Prompts zusammenbauen, Vorlagen ausfüllen und kopieren: für wissenschaftliches Arbeiten und Prüfungsvorbereitung.">
+<style>
+:root{
+  --bg:#f5f5f7;--card:#fff;--text:#1d1d1f;--leise:#5c5c63;--linie:#d2d2d7;
+  --akzent:#0a5fb4;--akzent-text:#fff;--feld:#fff;--marke:#fff3c4;--marke-text:#5a4300;
+  --radius:14px;--schatten:0 1px 3px rgba(0,0,0,.08);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#000;--card:#1c1c1e;--text:#f5f5f7;--leise:#a1a1a6;--linie:#3a3a3c;
+  --akzent:#4da3ff;--akzent-text:#000;--feld:#2c2c2e;--marke:#4a3b00;--marke-text:#ffe08a;
+}}
+@media (prefers-contrast:more){:root{--leise:var(--text);--linie:var(--text)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-size:1.0625rem;line-height:1.5}
+a{color:var(--akzent)}
+.huelle{max-width:52rem;margin:0 auto;padding:1rem 1rem 4rem}
+header.kopf{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.5rem 0 1rem}
+h1{font-size:clamp(1.6rem,4vw,2.2rem);margin:.25rem 0 .25rem;letter-spacing:-.01em}
+.unter{color:var(--leise);margin:0 0 1rem}
+h2{font-size:1.3rem;margin:0 0 .75rem}
+h3{font-size:1.05rem;margin:0 0 .5rem}
+button,.knopf{font:inherit;min-height:44px;min-width:44px;border-radius:10px;border:1px solid var(--linie);background:var(--card);color:var(--text);padding:.5rem 1rem;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--akzent);outline-offset:2px}
+.sprache{display:flex;gap:.25rem}
+.sprache button[aria-pressed=true]{background:var(--akzent);color:var(--akzent-text);border-color:var(--akzent)}
+nav.reiter{display:flex;gap:.25rem;background:var(--linie);padding:.25rem;border-radius:12px;margin:0 0 1.25rem;position:sticky;top:.5rem;z-index:2}
+nav.reiter button{flex:1;border:0;background:transparent;font-weight:600}
+nav.reiter button[aria-selected=true]{background:var(--card);box-shadow:var(--schatten)}
+.karte{background:var(--card);border-radius:var(--radius);box-shadow:var(--schatten);padding:1.25rem;margin:0 0 1rem}
+.raster{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
+label{display:block;font-weight:600;margin:.75rem 0 .25rem}
+label small{font-weight:400;color:var(--leise)}
+input,textarea{width:100%;font:inherit;padding:.6rem .75rem;border-radius:10px;border:1px solid var(--linie);background:var(--feld);color:var(--text);min-height:44px}
+textarea{min-height:5rem;resize:vertical}
+.ergebnis{white-space:pre-wrap;background:var(--bg);border:1px solid var(--linie);border-radius:10px;padding:1rem;margin:.75rem 0;font-size:1rem}
+.platz{background:var(--marke);color:var(--marke-text);border-radius:4px;padding:0 .2em}
+.aktionen{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.haupt{background:var(--akzent);color:var(--akzent-text);border-color:var(--akzent);font-weight:600}
+.meldung{color:var(--leise);min-height:1.5em}
+.filter{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 1rem}
+.filter button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.liste{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));margin-bottom:1rem}
+.liste button{text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;padding:.75rem 1rem}
+.liste button[aria-current=true]{border:2px solid var(--akzent)}
+.liste .art{font-size:.85rem;color:var(--leise)}
+.baustein{display:grid;grid-template-columns:2.25rem 1fr;gap:.75rem;align-items:start;margin:.5rem 0}
+.nr{width:2.25rem;height:2.25rem;border-radius:50%;background:var(--akzent);color:var(--akzent-text);display:grid;place-items:center;font-weight:700}
+.merksatz{border-left:4px solid var(--akzent);padding:.25rem 0 .25rem 1rem;margin:1rem 0 0}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid var(--linie);vertical-align:top}
+footer{color:var(--leise);font-size:.9rem;margin-top:2rem}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div class="huelle">
+  <header class="kopf">
+    <span></span>
+    <div class="sprache" role="group" aria-label="Sprache / Language">
+      <button type="button" data-lang="de" aria-pressed="true">DE</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+  <h1 data-t="titel">Prompting-Tipps fürs Studium</h1>
+  <p class="unter" data-t="unter">Prompt zusammenbauen, Vorlage ausfüllen, kopieren und in den KI-Chat einfügen.</p>
+
+  <nav class="reiter" role="tablist" aria-label="Bereiche">
+    <button role="tab" id="t-bauen" aria-controls="p-bauen" aria-selected="true" data-t="r_bauen">Prompt bauen</button>
+    <button role="tab" id="t-vorlagen" aria-controls="p-vorlagen" aria-selected="false" tabindex="-1" data-t="r_vorlagen">Vorlagen</button>
+    <button role="tab" id="t-wissen" aria-controls="p-wissen" aria-selected="false" tabindex="-1" data-t="r_wissen">Gut zu wissen</button>
+  </nav>
+
+  <main>
+    <section id="p-bauen" role="tabpanel" aria-labelledby="t-bauen">
+      <div class="karte">
+        <h2 data-t="bauen_h">Fünf Bausteine</h2>
+        <p data-t="bauen_p">Füllt aus, was ihr wisst. Leere Bausteine fallen weg.</p>
+        <div id="bausteine"></div>
+        <h3 data-t="euer_prompt">Euer Prompt</h3>
+        <div class="ergebnis" id="bau-ergebnis" aria-live="polite"></div>
+        <div class="aktionen">
+          <button type="button" class="haupt" id="bau-kopieren" data-t="kopieren">Kopieren</button>
+          <button type="button" id="bau-leeren" data-t="leeren">Leeren</button>
+          <span class="meldung" id="bau-meldung" role="status"></span>
+        </div>
+        <p class="merksatz" data-t="merksatz">Der Prüfauftrag ersetzt das Nachprüfen nicht. Er zeigt, wo ihr anfangen solltet.</p>
+      </div>
+    </section>
+
+    <section id="p-vorlagen" role="tabpanel" aria-labelledby="t-vorlagen" hidden>
+      <div class="filter" role="group" id="filter"></div>
+      <div class="liste" id="liste"></div>
+      <div class="karte" id="vorlage"></div>
+    </section>
+
+    <section id="p-wissen" role="tabpanel" aria-labelledby="t-wissen" hidden>
+      <div id="wissen-inhalt"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p data-t="fuss">Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.</p>
+  </footer>
+</div>
+
+<script>
+const T = {
+  de:{titel:"Prompting-Tipps fürs Studium",unter:"Prompt zusammenbauen, Vorlage ausfüllen, kopieren und in den KI-Chat einfügen.",
+    r_bauen:"Prompt bauen",r_vorlagen:"Vorlagen",r_wissen:"Gut zu wissen",
+    bauen_h:"Fünf Bausteine",bauen_p:"Füllt aus, was ihr wisst. Leere Bausteine fallen weg.",euer_prompt:"Euer Prompt",
+    kopieren:"Kopieren",leeren:"Leeren",kopiert:"Kopiert. Jetzt in den KI-Chat einfügen.",nicht_kopiert:"Kopieren ging nicht. Text markieren und von Hand kopieren.",
+    leer:"Noch leer. Füllt oben mindestens die Aufgabe aus.",
+    merksatz:"Der Prüfauftrag ersetzt das Nachprüfen nicht. Er zeigt, wo ihr anfangen solltet.",
+    alle:"Alle",schreiben:"Wissenschaftlich arbeiten",pruefung:"Für Prüfungen lernen",ausfuellen:"Ausfüllen",
+    hinweis_platz:"Gelb markiert: noch auszufüllen.",
+    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.",
+    sprache:"Sprache"},
+  en:{titel:"Prompting tips for your studies",unter:"Build a prompt, fill in a template, copy it and paste it into the AI chat.",
+    r_bauen:"Build a prompt",r_vorlagen:"Templates",r_wissen:"Good to know",
+    bauen_h:"Five building blocks",bauen_p:"Fill in what you know. Empty blocks are left out.",euer_prompt:"Your prompt",
+    kopieren:"Copy",leeren:"Clear",kopiert:"Copied. Now paste it into the AI chat.",nicht_kopiert:"Copying failed. Select the text and copy it by hand.",
+    leer:"Still empty. Fill in at least the task above.",
+    merksatz:"Asking the AI to flag what needs checking does not replace checking. It shows you where to start.",
+    alle:"All",schreiben:"Academic writing",pruefung:"Studying for exams",ausfuellen:"Fill in",
+    hinweis_platz:"Highlighted in yellow: still to fill in.",
+    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf (University of Applied Sciences). As of 4 Nov 2026. Licence CC BY-NC-SA 4.0.",
+    sprache:"Language"}
+};
+
+const BAUSTEINE = [
+  {k:"kontext",de:["Kontext","Wofür brauche ich das?","Ich bin im ersten Semester Medieninformatik und bereite ein Referat vor."],
+               en:["Context","What do I need this for?","I am a first-year media informatics student preparing a presentation."]},
+  {k:"rolle",de:["Rolle","Wie soll geantwortet werden?","Erkläre wie ein Tutor, nicht wie ein Lexikon."],
+             en:["Role","How should it answer?","Explain like a tutor, not like an encyclopedia."]},
+  {k:"aufgabe",de:["Aufgabe","Was genau?","Erkläre den Unterschied zwischen Skript und Programm."],
+               en:["Task","What exactly?","Explain the difference between a script and a program."]},
+  {k:"format",de:["Format","In welcher Form?","Höchstens acht Sätze, ein Beispiel."],
+              en:["Format","In what form?","At most eight sentences, one example."]},
+  {k:"pruef",de:["Prüfauftrag","Woran erkenne ich Fehler?","Markiere prüfpflichtige Aussagen und nenne, wer die Quelle verantwortet."],
+             en:["Check request","How do I spot errors?","Mark statements I need to verify and say who is responsible for each source."]}
+];
+
+const VORLAGEN = [
+  {g:"schreiben",de:"Forschungsfrage schärfen",en:"Sharpen your research question",
+   tde:"Bewerte meine Forschungsfrage: „{frage}“. Ist sie präzise, forschbar und relevant? Wie könnte ich sie verbessern?",
+   ten:"Assess my research question: “{frage}”. Is it precise, researchable and relevant? How could I improve it?"},
+  {g:"schreiben",de:"Suchbegriffe finden",en:"Find search terms",
+   tde:"Welche Schlüsselbegriffe, Synonyme und verwandten Konzepte sollte ich für die Literaturrecherche zum Thema {thema} verwenden?",
+   ten:"Which keywords, synonyms and related concepts should I use for a literature search on {thema}?"},
+  {g:"schreiben",de:"Recherchestrategie",en:"Research strategy",
+   tde:"Ich schreibe eine {arbeit} zum Thema {thema}. Hilf mir, eine Recherchestrategie zu entwickeln: zentrale Fragen, Schlüsselbegriffe, passende Datenbanken und Kriterien zur Bewertung von Quellen.",
+   ten:"I am writing a {arbeit} on {thema}. Help me develop a research strategy: key questions, keywords, suitable databases and criteria for evaluating sources."},
+  {g:"schreiben",de:"Gliederung prüfen",en:"Check your outline",
+   tde:"Meine Forschungsfrage lautet {frage}. Hier ist meine Gliederung: {gliederung}. Wo fehlt etwas, wo ist die Reihenfolge nicht logisch?",
+   ten:"My research question is {frage}. Here is my outline: {gliederung}. What is missing, and where is the order not logical?"},
+  {g:"schreiben",de:"Argumentation prüfen",en:"Check your argument",
+   tde:"Zu meiner These {these} habe ich diese Argumente gesammelt: {argumente}. Schlage eine logische Reihenfolge vor, nenne mögliche Gegenargumente und zeige Lücken in der Argumentation.",
+   ten:"For my thesis {these} I have collected these arguments: {argumente}. Suggest a logical order, name possible counterarguments and show gaps in the reasoning."},
+  {g:"schreiben",de:"Kritisch gegenlesen",en:"Critical review",
+   tde:"Hier ist ein Abschnitt meiner Arbeit: {abschnitt}. Lies ihn als kritische Gutachterin: Wo ist die Argumentation nicht schlüssig, wo fehlen Belege, welche Sichtweisen fehlen?",
+   ten:"Here is a section of my paper: {abschnitt}. Read it as a critical reviewer: where is the argument not conclusive, where is evidence missing, which perspectives are missing?"},
+  {g:"schreiben",de:"Zeitplan",en:"Schedule",
+   tde:"Erstelle einen realistischen Zeitplan für meine {arbeit} mit Abgabe am {datum}, von der Recherche bis zur Überarbeitung.",
+   ten:"Create a realistic schedule for my {arbeit}, due on {datum}, from research to revision."},
+  {g:"pruefung",de:"Lernplan",en:"Study plan",
+   tde:"Ich bereite mich auf eine Prüfung zu {thema} vor. Erstelle mir die zehn wichtigsten Begriffe mit je einem Satz Erklärung, zwölf typische Prüfungsfragen und einen Lernplan für {tage} Tage mit Wiederholungen.",
+   ten:"I am preparing for an exam on {thema}. Give me the ten most important terms with a one-sentence explanation each, twelve typical exam questions and a {tage}-day study plan with reviews."},
+  {g:"pruefung",de:"Antwortgerüst",en:"Answer framework",
+   tde:"Gib mir für {thema} ein Antwortgerüst: Definition (1 Satz), Einordnung (2 Sätze), Beispiel (1 Satz), Abgrenzung (1 Satz), typische Rückfrage mit Kurzantwort.",
+   ten:"Give me an answer framework for {thema}: definition (1 sentence), context (2 sentences), example (1 sentence), distinction (1 sentence), a typical follow-up question with a short answer."},
+  {g:"pruefung",de:"Prüfung simulieren",en:"Simulate an oral exam",
+   tde:"Du bist Prüfer*in. Stelle mir eine Frage zu {thema} und warte auf meine Antwort. Gib dann zwei Punkte Feedback, eine schwierigere Rückfrage und eine sehr gute Musterantwort.",
+   ten:"You are the examiner. Ask me one question on {thema} and wait for my answer. Then give two points of feedback, a harder follow-up question and a very good model answer."},
+  {g:"pruefung",de:"Karteikarten",en:"Flashcards",
+   tde:"Erstelle 20 Karteikarten zu {thema}: vorne eine Prüfungsfrage, hinten 3–5 Stichpunkte für die Antwort und ein typischer Fehler.",
+   ten:"Create 20 flashcards on {thema}: an exam question on the front, 3–5 bullet points for the answer and one typical mistake on the back."},
+  {g:"pruefung",de:"Lücken finden",en:"Find gaps",
+   tde:"Hier ist meine Antwortskizze: {stichworte}. Was fehlt inhaltlich, wo ist es zu vage, welche Rückfrage könnte kommen?",
+   ten:"Here is my answer outline: {stichworte}. What is missing, where is it too vague, which follow-up question might come?"},
+  {g:"pruefung",de:"Vergleichen",en:"Compare",
+   tde:"Vergleiche {a} und {b}: drei Gemeinsamkeiten, fünf Unterschiede, typische Anwendungen und eine häufige Prüfungsfalle.",
+   ten:"Compare {a} and {b}: three similarities, five differences, typical applications and one common exam trap."}
+];
+
+const FELDER = {
+  frage:{de:["Forschungsfrage","Wie verändert KI das Lernen im ersten Semester?"],en:["Research question","How does AI change learning in the first semester?"]},
+  thema:{de:["Thema","Datenschutz in sozialen Netzwerken"],en:["Topic","privacy in social networks"]},
+  arbeit:{de:["Art der Arbeit","Hausarbeit"],en:["Type of paper","term paper"]},
+  gliederung:{de:["Gliederung","1. Einleitung 2. …"],en:["Outline","1. Introduction 2. …"]},
+  these:{de:["These",""],en:["Thesis",""]},
+  argumente:{de:["Argumente",""],en:["Arguments",""]},
+  abschnitt:{de:["Abschnitt (Text einfügen)",""],en:["Section (paste text)",""]},
+  datum:{de:["Abgabedatum","20.11."],en:["Due date","20 Nov"]},
+  tage:{de:["Anzahl Tage","10"],en:["Number of days","10"]},
+  stichworte:{de:["Eure Stichworte",""],en:["Your notes",""]},
+  a:{de:["Konzept A","Skript"],en:["Concept A","script"]},
+  b:{de:["Konzept B","Programm"],en:["Concept B","program"]}
+};
+const LANG_FELD = new Set(["gliederung","abschnitt","stichworte","argumente"]);
+
+const WISSEN = {
+ de:`<div class="karte"><h2>Vier Strategien</h2><table>
+<tr><th>Strategie</th><th>Was sie bewirkt</th><th>Starthilfe</th></tr>
+<tr><td><b>Genaue Anweisung</b> (Zero-Shot)</td><td>präzisere Antwort durch klare Vorgaben</td><td>„Der Text soll … lang sein, die Struktur … haben und sich an … richten.“</td></tr>
+<tr><td><b>Mit Beispiel</b> (Few-Shot)</td><td>Antwort orientiert sich an einem guten Muster</td><td>„Orientiere dich an folgendem Beispiel: …“</td></tr>
+<tr><td><b>Schritt für Schritt</b> (Chain-of-Thought)</td><td>der Weg zur Antwort wird sichtbar und prüfbar</td><td>„Gehe Schritt für Schritt vor und erkläre, wie du zu deinem Ergebnis kommst.“</td></tr>
+<tr><td><b>Mit Rolle</b> (Role-Prompting)</td><td>Antwort aus einer bestimmten Perspektive</td><td>„Du bist kritische Gutachterin.“</td></tr></table></div>
+<div class="raster">
+<div class="karte"><h2>Fünf Tipps</h2><ol>
+<li><b>Genau sein:</b> Je klarer die Anforderung, desto brauchbarer die Antwort.</li>
+<li><b>Kontext geben:</b> Sagt, wofür ihr es braucht und was ihr schon wisst.</li>
+<li><b>In Schritten arbeiten:</b> Große Aufgaben in Teilschritte zerlegen.</li>
+<li><b>Nachschärfen:</b> Antwort lesen, Prompt verbessern, noch einmal fragen.</li>
+<li><b>Prüfen:</b> Jede Aussage und jede Quelle selbst nachprüfen. KI erfindet Quellen und DOIs.</li></ol></div>
+<div class="karte"><h2>Regeln für Studienleistungen</h2><ul>
+<li><b>Eure Leistung bleibt eure:</b> KI darf unterstützen. Die Analyse und das Urteil kommen von euch.</li>
+<li><b>Kennzeichnen:</b> Gebt an, welches Werkzeug ihr wofür genutzt habt.</li>
+<li><b>Datenschutz:</b> Keine personenbezogenen oder vertraulichen Daten in KI-Chats geben. Nutzt den KI-Chat eurer Hochschule.</li>
+<li>Es gelten die Regeln eures Moduls und eurer Prüfungsordnung.</li></ul></div></div>
+<div class="karte"><h2>Weiterlernen (HSD-Moodle)</h2><ul>
+<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4386">Wissenschaftlich Arbeiten mit KI</a> (DHBW). Dort heißen die Bausteine PASSD: dieselbe Idee.</li>
+<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4352">Einführung in die KI</a> (KI-Campus)</li></ul>
+<p>Beide mit Selbsteinschreibung, Anmeldung mit HSD-Kennung.</p></div>`,
+ en:`<div class="karte"><h2>Four strategies</h2><table>
+<tr><th>Strategy</th><th>What it does</th><th>Starter</th></tr>
+<tr><td><b>Precise instruction</b> (zero-shot)</td><td>a more precise answer through clear requirements</td><td>“The text should be … long, follow the structure … and address …”</td></tr>
+<tr><td><b>With an example</b> (few-shot)</td><td>the answer follows a good model</td><td>“Follow this example: …”</td></tr>
+<tr><td><b>Step by step</b> (chain of thought)</td><td>the path to the answer becomes visible and checkable</td><td>“Go step by step and explain how you reach your result.”</td></tr>
+<tr><td><b>With a role</b> (role prompting)</td><td>an answer from a specific perspective</td><td>“You are a critical reviewer.”</td></tr></table></div>
+<div class="raster">
+<div class="karte"><h2>Five tips</h2><ol>
+<li><b>Be specific:</b> the clearer the request, the more useful the answer.</li>
+<li><b>Give context:</b> say what you need it for and what you already know.</li>
+<li><b>Work in steps:</b> break big tasks into smaller ones.</li>
+<li><b>Refine:</b> read the answer, improve the prompt, ask again.</li>
+<li><b>Check:</b> verify every statement and every source yourself. AI invents sources and DOIs.</li></ol></div>
+<div class="karte"><h2>Rules for coursework</h2><ul>
+<li><b>Your work stays yours:</b> AI may support you. The analysis and judgement are yours.</li>
+<li><b>Declare it:</b> state which tool you used and what for.</li>
+<li><b>Data protection:</b> do not enter personal or confidential data into AI chats. Use your university's AI chat.</li>
+<li>The rules of your module and your examination regulations apply.</li></ul></div></div>
+<div class="karte"><h2>Keep learning (HSD Moodle)</h2><ul>
+<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4386">Wissenschaftlich Arbeiten mit KI</a> (academic work with AI, DHBW, in German). Its PASSD scheme is the same idea as the five blocks.</li>
+<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4352">Einführung in die KI</a> (introduction to AI, KI-Campus, in German)</li></ul>
+<p>Both open for self-enrolment with your HSD account.</p></div>`
+};
+
+let lang = localStorage.getItem("pt-lang") || ((navigator.language||"de").toLowerCase().startsWith("de") ? "de" : (navigator.language ? "en" : "de"));
+const werte = {};          // Eingaben Baukasten
+const vwerte = {};         // Eingaben Vorlagen
+let filter = "alle", aktiv = 0;
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function setzeSprache(l){
+  lang = l; localStorage.setItem("pt-lang", l);
+  document.documentElement.lang = l;
+  document.title = T[l].titel;
+  document.querySelectorAll("[data-t]").forEach(e => { const v = T[l][e.dataset.t]; if (v) e.textContent = v; });
+  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  document.querySelector(".sprache").setAttribute("aria-label", T[l].sprache);
+  baueBausteine(); baueVorlagen(); $("#wissen-inhalt").innerHTML = WISSEN[l];
+}
+
+function baueBausteine(){
+  $("#bausteine").innerHTML = BAUSTEINE.map((b,i) => {
+    const [name, frage, bsp] = b[lang];
+    return `<div class="baustein"><span class="nr" aria-hidden="true">${i+1}</span><div>
+      <label for="b-${b.k}" style="margin-top:0">${name} <small>${frage}</small></label>
+      <textarea id="b-${b.k}" data-k="${b.k}" rows="2" placeholder="${esc(bsp)}">${esc(werte[b.k]||"")}</textarea></div></div>`;
+  }).join("");
+  $("#bausteine").querySelectorAll("textarea").forEach(t => t.addEventListener("input", e => { werte[e.target.dataset.k] = e.target.value; bauErgebnis(); }));
+  bauErgebnis();
+}
+function bauText(){ return BAUSTEINE.map(b => (werte[b.k]||"").trim()).filter(Boolean).join("\n\n"); }
+function bauErgebnis(){
+  const t = bauText();
+  $("#bau-ergebnis").textContent = t || T[lang].leer;
+}
+
+function felderVon(v){ return [...new Set([...(v.tde.matchAll(/\{(\w+)\}/g))].map(m => m[1]))]; }
+function vorlageText(v, markieren){
+  const roh = lang === "de" ? v.tde : v.ten;
+  const teile = roh.split(/(\{\w+\})/);
+  return teile.map(p => {
+    const m = p.match(/^\{(\w+)\}$/);
+    if (!m) return markieren ? esc(p) : p;
+    const w = (vwerte[m[1]]||"").trim();
+    if (w) return markieren ? esc(w) : w;
+    const name = FELDER[m[1]][lang][0];
+    return markieren ? `<span class="platz">[${esc(name)}]</span>` : `[${name}]`;
+  }).join("");
+}
+function baueVorlagen(){
+  $("#filter").setAttribute("aria-label", "Filter");
+  $("#filter").innerHTML = ["alle","schreiben","pruefung"].map(f => `<button type="button" data-f="${f}" aria-pressed="${f===filter}">${T[lang][f]}</button>`).join("");
+  $("#filter").querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.f; const erste = VORLAGEN.findIndex(v => filter==="alle" || v.g===filter); aktiv = erste; baueVorlagen(); });
+  $("#liste").innerHTML = VORLAGEN.map((v,i) => (filter==="alle"||v.g===filter) ?
+    `<button type="button" data-i="${i}" aria-current="${i===aktiv}"><b>${v[lang]}</b><span class="art">${T[lang][v.g]}</span></button>` : "").join("");
+  $("#liste").querySelectorAll("button").forEach(b => b.onclick = () => { aktiv = +b.dataset.i; baueVorlagen(); $("#vorlage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"}); });
+  zeigeVorlage();
+}
+function zeigeVorlage(){
+  const v = VORLAGEN[aktiv];
+  const felder = felderVon(v);
+  $("#vorlage").innerHTML = `<h2>${v[lang]}</h2><h3>${T[lang].ausfuellen}</h3>` +
+    felder.map(k => { const [name, bsp] = FELDER[k][lang]; const lang_ = LANG_FELD.has(k);
+      return `<label for="v-${k}">${name}</label>` + (lang_ ?
+        `<textarea id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}">${esc(vwerte[k]||"")}</textarea>` :
+        `<input id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}" value="${esc(vwerte[k]||"")}">`); }).join("") +
+    `<h3 style="margin-top:1rem">${T[lang].euer_prompt}</h3><div class="ergebnis" id="v-ergebnis"></div>
+     <p class="meldung" style="margin:0 0 .5rem">${T[lang].hinweis_platz}</p>
+     <div class="aktionen"><button type="button" class="haupt" id="v-kopieren">${T[lang].kopieren}</button><span class="meldung" id="v-meldung" role="status"></span></div>`;
+  $("#vorlage").querySelectorAll("input,textarea").forEach(e => e.addEventListener("input", ev => { vwerte[ev.target.dataset.k] = ev.target.value; $("#v-ergebnis").innerHTML = vorlageText(v, true); }));
+  $("#v-ergebnis").innerHTML = vorlageText(v, true);
+  $("#v-kopieren").onclick = () => kopiere(vorlageText(v, false), "#v-meldung");
+}
+
+async function kopiere(text, ziel){
+  const m = $(ziel);
+  if (!text) { m.textContent = T[lang].leer; return; }
+  try { await navigator.clipboard.writeText(text); m.textContent = T[lang].kopiert; }
+  catch { m.textContent = T[lang].nicht_kopiert; }
+  setTimeout(() => { m.textContent = ""; }, 4000);
+}
+
+// Reiter mit Pfeiltasten
+const tabs = [...document.querySelectorAll('[role=tab]')];
+function waehle(t, fokus){
+  tabs.forEach(x => { const an = x === t; x.setAttribute("aria-selected", an); x.tabIndex = an ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !an; });
+  if (fokus) t.focus();
+  history.replaceState(null, "", "#" + t.id.slice(2));
+}
+tabs.forEach((t,i) => {
+  t.onclick = () => waehle(t);
+  t.onkeydown = e => { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); waehle(tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length], true); } };
+});
+const start = tabs.find(t => "#" + t.id.slice(2) === location.hash); if (start) waehle(start);
+
+document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => setzeSprache(b.dataset.lang));
+$("#bau-kopieren").onclick = () => kopiere(bauText(), "#bau-meldung");
+$("#bau-leeren").onclick = () => { for (const k in werte) delete werte[k]; baueBausteine(); };
+setzeSprache(lang);
+</script>
+</body>
+</html>
