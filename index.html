@@ -1,4 +1,37 @@
 <!doctype html>
+<!--
+Brainstorming-Teil nach BMad Method, bmad-toolbox, skills/bmad-brainstorming:
+MIT License
+
+Copyright (c) 2025 BMad Code, LLC
+
+This project incorporates contributions from the open source community.
+See [CONTRIBUTORS.md](CONTRIBUTORS.md) for contributor attribution.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+TRADEMARK NOTICE:
+BMad™, BMad Method™, and BMad Core™ are trademarks of BMad Code, LLC, covering all
+casings and variations (including BMAD, bmad, BMadMethod, BMAD-METHOD, etc.). The use of
+these trademarks in this software does not grant any rights to use the trademarks
+for any other purpose. See [TRADEMARK.md](TRADEMARK.md) for detailed guidelines.
+-->
 <html lang="de">
 <head>
 <meta charset="utf-8">
@@ -34,6 +67,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 nav.reiter{display:flex;gap:.25rem;background:var(--linie);padding:.25rem;border-radius:12px;margin:0 0 1.25rem;position:sticky;top:.5rem;z-index:2}
 nav.reiter button{flex:1;border:0;background:transparent;font-weight:600}
 nav.reiter button[aria-selected=true]{background:var(--card);box-shadow:var(--schatten)}
+@media (max-width:34rem){nav.reiter{display:grid;grid-template-columns:1fr 1fr}}
 .karte{background:var(--card);border-radius:var(--radius);box-shadow:var(--schatten);padding:1.25rem;margin:0 0 1rem}
 .raster{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
 label{display:block;font-weight:600;margin:.75rem 0 .25rem}
@@ -58,6 +92,14 @@ table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid var(--linie);vertical-align:top}
 footer{color:var(--leise);font-size:.9rem;margin-top:2rem}
 [hidden]{display:none!important}
+fieldset.rollen{border:0;padding:0;margin:1rem 0 0;min-inline-size:0}
+fieldset.rollen legend{font-weight:600;padding:0;margin-bottom:.25rem}
+.wahl{font-weight:400;display:flex;gap:.75rem;align-items:flex-start;border:1px solid var(--linie);border-radius:10px;padding:.75rem 1rem;margin:.5rem 0;cursor:pointer;min-height:44px}
+.wahl:has(input:checked){border:2px solid var(--akzent);padding:calc(.75rem - 1px) calc(1rem - 1px)}
+.wahl input{width:1.25rem;height:1.25rem;min-height:0;margin:.15rem 0 0;flex:none;accent-color:var(--akzent)}
+.wahl b{display:block}
+.wahl span{color:var(--leise);font-size:.95rem}
+.tgruppe{margin:1rem 0 .25rem;font-size:1rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 </head>
@@ -76,6 +118,7 @@ footer{color:var(--leise);font-size:.9rem;margin-top:2rem}
   <nav class="reiter" role="tablist" aria-label="Bereiche">
     <button role="tab" id="t-bauen" aria-controls="p-bauen" aria-selected="true" data-t="r_bauen">Prompt bauen</button>
     <button role="tab" id="t-vorlagen" aria-controls="p-vorlagen" aria-selected="false" tabindex="-1" data-t="r_vorlagen">Vorlagen</button>
+    <button role="tab" id="t-brainstorming" aria-controls="p-brainstorming" aria-selected="false" tabindex="-1" data-t="r_brain">Brainstorming</button>
     <button role="tab" id="t-wissen" aria-controls="p-wissen" aria-selected="false" tabindex="-1" data-t="r_wissen">Gut zu wissen</button>
   </nav>
 
@@ -102,12 +145,39 @@ footer{color:var(--leise);font-size:.9rem;margin-top:2rem}
       <div class="karte" id="vorlage"></div>
     </section>
 
+    <section id="p-brainstorming" role="tabpanel" aria-labelledby="t-brainstorming" hidden>
+      <div class="karte">
+        <h2 data-t="bs_h">Brainstorming mit KI</h2>
+        <p data-t="bs_p">Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.</p>
+        <label for="bs-thema" data-t="bs_thema">Thema</label>
+        <input id="bs-thema">
+        <label for="bs-ziel" data-t="bs_ziel">Ziel</label>
+        <input id="bs-ziel">
+        <fieldset class="rollen"><legend data-t="bs_rolle">Rolle der KI</legend><div id="bs-rollen"></div></fieldset>
+      </div>
+      <div class="karte">
+        <h2 data-t="bs_tech">Techniken</h2>
+        <p class="meldung" id="bs-zahl" aria-live="polite"></p>
+        <div id="bs-techniken"></div>
+      </div>
+      <div class="karte">
+        <h2 data-t="euer_prompt">Euer Prompt</h2>
+        <div class="ergebnis" id="bs-ergebnis"></div>
+        <div class="aktionen">
+          <button type="button" class="haupt" id="bs-kopieren" data-t="kopieren">Kopieren</button>
+          <span class="meldung" id="bs-meldung" role="status"></span>
+        </div>
+        <p class="merksatz" data-t="bs_tipp">Im Chat schreibt ihr „Liste“ für alle bisherigen Ideen und „Abschluss“ für die Auswertung.</p>
+      </div>
+    </section>
+
     <section id="p-wissen" role="tabpanel" aria-labelledby="t-wissen" hidden>
       <div id="wissen-inhalt"></div>
     </section>
   </main>
 
   <footer>
+    <p data-t="bs_herkunft">Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt.</p>
     <p data-t="fuss">Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.</p>
   </footer>
 </div>
@@ -123,7 +193,12 @@ const T = {
     alle:"Alle",schreiben:"Wissenschaftlich arbeiten",pruefung:"Für Prüfungen lernen",ausfuellen:"Ausfüllen",
     hinweis_platz:"Gelb markiert: noch auszufüllen.",
     fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.",
-    sprache:"Sprache"},
+    sprache:"Sprache",
+    r_brain:"Brainstorming",bs_h:"Brainstorming mit KI",bs_p:"Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.",
+    bs_thema:"Thema",bs_ziel:"Ziel",bs_rolle:"Rolle der KI",bs_tech:"Techniken",
+    bs_zahl:n => n ? `${n} gewählt` + (n > 4 ? ". Mehr als 4 machen die Sitzung lang." : ".") : "Keine gewählt: Die KI schlägt dann selbst 3–4 vor.",
+    bs_tipp:"Im Chat schreibt ihr „Liste“ für alle bisherigen Ideen und „Abschluss“ für die Auswertung.",
+    bs_herkunft:"Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt."},
   en:{titel:"Prompting tips for your studies",unter:"Build a prompt, fill in a template, copy it and paste it into the AI chat.",
     r_bauen:"Build a prompt",r_vorlagen:"Templates",r_wissen:"Good to know",
     bauen_h:"Five building blocks",bauen_p:"Fill in what you know. Empty blocks are left out.",euer_prompt:"Your prompt",
@@ -133,7 +208,12 @@ const T = {
     alle:"All",schreiben:"Academic writing",pruefung:"Studying for exams",ausfuellen:"Fill in",
     hinweis_platz:"Highlighted in yellow: still to fill in.",
     fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf (University of Applied Sciences). As of 4 Nov 2026. Licence CC BY-NC-SA 4.0.",
-    sprache:"Language"}
+    sprache:"Language",
+    r_brain:"Brainstorming",bs_h:"Brainstorming with AI",bs_p:"Enter topic and goal, choose a role and 3–4 techniques, copy the prompt. The AI then guides you through the session step by step.",
+    bs_thema:"Topic",bs_ziel:"Goal",bs_rolle:"Role of the AI",bs_tech:"Techniques",
+    bs_zahl:n => n ? `${n} selected` + (n > 4 ? ". More than 4 make the session long." : ".") : "None selected: the AI will suggest 3–4 itself.",
+    bs_tipp:"In the chat, type “list” to see all ideas so far and “wrap up” for the summary.",
+    bs_herkunft:"Brainstorming based on BMad Method (MIT licence, © 2025 BMad Code, LLC), adapted and shortened for students."}
 };
 
 const BAUSTEINE = [
@@ -254,6 +334,95 @@ const WISSEN = {
 <p>Both open for self-enrolment with your HSD account.</p></div>`
 };
 
+
+// Auswahl aus brain-methods.csv (bmad-toolbox, MIT), Texte für Studierende umformuliert
+const BS_ROLLEN = [
+  {k:"moderation", de:["Moderation","Die KI fragt und treibt an. Die Ideen kommen von euch."], en:["Facilitator","The AI asks and pushes. The ideas come from you."]},
+  {k:"partner", de:["Kreativpartner","Die KI moderiert und bringt eigene Ideen ein, jeweils gekennzeichnet."], en:["Creative partner","The AI facilitates and adds its own ideas, each one marked."]},
+  {k:"allein", de:["Ideen für mich","Die KI führt die Sitzung allein durch und legt das Ergebnis vor."], en:["Ideas for me","The AI runs the session on its own and presents the result."]}
+];
+const BS_GRUPPEN = {finden:{de:"Thema finden und schärfen",en:"Find and sharpen a topic"}, ideen:{de:"Ideen sammeln",en:"Collect ideas"}, pruefen:{de:"Prüfen und planen",en:"Check and plan"}};
+const BS_TECHNIKEN = [
+  {g:"finden", de:["Fragensturm","Nur Fragen zum Thema sammeln und keine Antworten, bis klar ist, welche Frage sich wirklich lohnt."], en:["Question storming","Collect only questions about the topic and no answers until it is clear which question is really worth pursuing."]},
+  {g:"finden", de:["Fragenstern","Das Thema mit den W-Fragen löchern: wer, was, wo, wann, warum, wie. Erst alle Fragen, dann Antworten."], en:["Starbursting","Grill the topic with who, what, where, when, why and how. All questions first, answers later."]},
+  {g:"finden", de:["Wie könnten wir …?","Das Problem als Reihe von „Wie könnten wir …?“-Fragen fassen und zur schärfsten Frage Ideen entwickeln."], en:["How might we","Rephrase the problem as a set of “How might we …?” questions and develop ideas for the sharpest one."]},
+  {g:"finden", de:["Mindmap","Vom Thema aus verzweigen, jeder Ast bekommt Unteräste. Abschweifen ist erlaubt."], en:["Mind mapping","Branch out from the topic, every branch gets sub-branches. Tangents are allowed."]},
+  {g:"ideen", de:["Was-wäre-wenn","Eine Randbedingung nach der anderen aufheben: unbegrenzt Zeit, das Gegenteil gilt, das Problem ist weg. Was folgt daraus?"], en:["What if","Lift one constraint at a time: unlimited time, the opposite is true, the problem is gone. What follows?"]},
+  {g:"ideen", de:["Analogien","Fragen „Das ist wie was?“ und die Lösung aus dem anderen Bereich übertragen."], en:["Analogies","Ask “What is this like?” and transfer the solution from the other field."]},
+  {g:"ideen", de:["Umgekehrtes Brainstorming","Sammeln, wie das Vorhaben sicher scheitert, und jeden Punkt ins Gegenteil wenden."], en:["Reverse brainstorming","Collect ways to make the project fail for sure, then turn each one around."]},
+  {g:"ideen", de:["Schlechteste Idee","Absichtlich die schlechtesten Lösungen sammeln und fragen, was jede über die gute Lösung verrät."], en:["Worst possible idea","Collect the worst solutions on purpose and ask what each one reveals about a good one."]},
+  {g:"ideen", de:["Annahmen umkehren","Alle Annahmen auflisten, jede ins Gegenteil drehen und darauf eine Lösung bauen."], en:["Assumption reversal","List all assumptions, flip each one and build a solution on the reversed version."]},
+  {g:"pruefen", de:["Fünfmal Warum","Fünfmal nacheinander „Warum?“ fragen, bis die Ursache hinter dem Problem sichtbar wird."], en:["Five whys","Ask “Why?” five times in a row until the cause behind the problem becomes visible."]},
+  {g:"pruefen", de:["Sechs Denkhüte","Das Vorhaben nacheinander aus sechs Blickwinkeln betrachten: Fakten, Gefühle, Nutzen, Risiken, neue Ideen, Vorgehen."], en:["Six thinking hats","Look at the project from six angles in turn: facts, feelings, benefits, risks, new ideas, process."]},
+  {g:"pruefen", de:["Walt-Disney-Methode","Die Idee nacheinander als Träumer, Realist und Kritiker ansehen."], en:["Disney method","Look at the idea as dreamer, realist and critic in turn."]},
+  {g:"pruefen", de:["Rückwärtsplanung","Das fertige Ergebnis genau beschreiben und von dort rückwärts bis zum ersten Schritt planen."], en:["Backcasting","Describe the finished result in detail and plan backwards from there to the first step."]}
+];
+const BS_BSP = {de:["z. B. Thema für meine Hausarbeit in Medienpsychologie","z. B. drei Fragestellungen, die ich bis Freitag mit meiner Betreuerin bespreche"],
+                en:["e.g. a topic for my media psychology term paper","e.g. three research questions to discuss with my supervisor by Friday"]};
+const BS_PROMPT = {
+ de:{einl:"Du moderierst eine Brainstorming-Sitzung für mein Studium.", thema:"Thema: ", ziel:"Ziel: ", offen:"(noch offen, frag mich zuerst danach)", rolle:"Rolle: ",
+   rollen:{moderation:"Moderation: Du lieferst selbst KEINE Ideen, auch keine Beispiele, Befunde oder Zahlen zum Thema. Du stellst Fragen, forderst nach („Was noch?“, „Und das Gegenteil?“), wechselst die Perspektive und hältst meine Ideen fest.",
+     partner:"Kreativpartner: Du moderierst und bringst auch eigene Ideen ein. Auf jede meiner Ideen antwortest du mit einer eigenen, die darauf aufbaut, statt sie zu bewerten. Kennzeichne jede Idee mit (Ich) oder (KI).",
+     allein:"Ideen für mich: Du führst die ganze Sitzung selbst durch, wendest die Techniken nacheinander an, erzeugst die Ideen und legst mir das Ergebnis vor."},
+   tech:"Techniken, in dieser Reihenfolge:", keine:"Techniken: Schlag mir zuerst 3–4 passende Kreativtechniken vor und warte auf meine Wahl.", regeln:"Regeln:",
+   r_viel:"- Ziel sind möglichst viele Ideen (Richtwert: 50 und mehr). Nicht vorschnell bewerten, ordnen oder zusammenfassen.",
+   r_eine:"- Pro Nachricht genau eine kurze Frage oder Aufgabe. Keine Auswahlmenüs, keine Tabellen oder Raster zum Ausfüllen.",
+   r_nr:"- Jede meiner Ideen sofort mit ihrer Nummer festhalten (z. B. „#3: …“), dann die nächste Frage.",
+   r_wechsel:"- Eine Technik so lange nutzen, bis sie nichts Neues mehr bringt; den Wechsel zur nächsten kurz ankündigen.",
+   r_liste:"- Alle Ideen fortlaufend nummerieren. Wenn ich „Liste“ schreibe, die bisherige Liste vollständig ausgeben.",
+   r_sorgfalt:"- Wissenschaftliche Sorgfalt: Annahmen als Annahmen kennzeichnen. Keine Quellen, Studien, Zahlen oder Zitate erfinden; wo ein Beleg nötig wäre, einen Prüfauftrag notieren.",
+   r_daten:"- Keine personenbezogenen Daten erfragen oder verarbeiten.",
+   abschl_dialog:"Abschluss, erst wenn ich „Abschluss“ schreibe: ", abschl:"Abschluss: ",
+   abschl_text:"Ideen nach Themen bündeln, die drei vielversprechendsten mit Begründung, offene Fragen und Prüfaufträge, sinnvolle nächste Schritte. Ausgabe in Markdown.",
+   start_offen:"Frag mich zuerst nach dem, was oben noch offen ist, und beginne erst nach meiner Antwort.",
+   start_dialog:"Bestätige Thema und Ziel in einem Satz und beginne dann mit der ersten Technik.", start:"Beginne jetzt."},
+ en:{einl:"You are facilitating a brainstorming session for my studies.", thema:"Topic: ", ziel:"Goal: ", offen:"(still open, ask me about it first)", rolle:"Role: ",
+   rollen:{moderation:"Facilitator: you contribute NO ideas yourself, not even examples, findings or figures on the topic. You ask questions, push for more (“What else?”, “And the opposite?”), change perspective and record my ideas.",
+     partner:"Creative partner: you facilitate and also contribute your own ideas. Answer each of my ideas with one of your own that builds on it instead of judging it. Mark every idea with (me) or (AI).",
+     allein:"Ideas for me: you run the whole session yourself, apply the techniques one after another, generate the ideas and present the result to me."},
+   tech:"Techniques, in this order:", keine:"Techniques: first suggest 3–4 suitable creativity techniques and wait for my choice.", regeln:"Rules:",
+   r_viel:"- The aim is as many ideas as possible (guideline: 50 or more). Do not judge, sort or summarise too early.",
+   r_eine:"- Exactly one short question or task per message. No menus, no tables or grids to fill in.",
+   r_nr:"- Record each of my ideas immediately with its number (e.g. “#3: …”), then ask the next question.",
+   r_wechsel:"- Use a technique until it yields nothing new; announce the switch to the next one briefly.",
+   r_liste:"- Number all ideas continuously. When I type “list”, output the complete list so far.",
+   r_sorgfalt:"- Academic care: mark assumptions as assumptions. Do not invent sources, studies, figures or quotes; where evidence would be needed, note a check task.",
+   r_daten:"- Do not ask for or process personal data.",
+   abschl_dialog:"Wrap-up, only when I type “wrap up”: ", abschl:"Wrap-up: ",
+   abschl_text:"group the ideas by theme, the three most promising with reasons, open questions and check tasks, sensible next steps. Output in Markdown.",
+   start_offen:"First ask me about whatever is still open above and only start after my answer.",
+   start_dialog:"Confirm topic and goal in one sentence, then start with the first technique.", start:"Start now."}
+};
+const bs = {rolle:"moderation", gewaehlt:new Set()};
+
+function baueBrainstorming(){
+  $("#bs-thema").placeholder = BS_BSP[lang][0];
+  $("#bs-ziel").placeholder = BS_BSP[lang][1];
+  $("#bs-rollen").innerHTML = BS_ROLLEN.map(r => `<label class="wahl"><input type="radio" name="bs-rolle" value="${r.k}" ${r.k===bs.rolle?"checked":""}><div><b>${r[lang][0]}</b><span>${r[lang][1]}</span></div></label>`).join("");
+  $("#bs-techniken").innerHTML = Object.keys(BS_GRUPPEN).map(g =>
+    `<h3 class="tgruppe">${BS_GRUPPEN[g][lang]}</h3>` + BS_TECHNIKEN.map((t,i) => t.g!==g ? "" :
+      `<label class="wahl"><input type="checkbox" value="${i}" ${bs.gewaehlt.has(i)?"checked":""}><div><b>${t[lang][0]}</b><span>${t[lang][1]}</span></div></label>`).join("")).join("");
+  $("#bs-rollen").querySelectorAll("input").forEach(e => e.onchange = () => { bs.rolle = e.value; bsErgebnis(); });
+  $("#bs-techniken").querySelectorAll("input").forEach(e => e.onchange = () => { e.checked ? bs.gewaehlt.add(+e.value) : bs.gewaehlt.delete(+e.value); bsErgebnis(); });
+  bsErgebnis();
+}
+function bsText(){
+  const P = BS_PROMPT[lang], thema = $("#bs-thema").value.trim(), ziel = $("#bs-ziel").value.trim();
+  const dialog = bs.rolle !== "allein";
+  const techs = [...bs.gewaehlt].sort((a,b) => a-b).map(i => BS_TECHNIKEN[i][lang]);
+  const L = [P.einl, "", P.thema + (thema || P.offen), P.ziel + (ziel || P.offen), "", P.rolle + P.rollen[bs.rolle], ""];
+  if (techs.length) { L.push(P.tech); techs.forEach((t,i) => L.push(`${i+1}. ${t[0]}: ${t[1]}`)); } else L.push(P.keine);
+  L.push("", P.regeln, P.r_viel);
+  if (dialog) L.push(P.r_eine, P.r_nr);
+  L.push(P.r_wechsel, P.r_liste, P.r_sorgfalt, P.r_daten, "", (dialog ? P.abschl_dialog : P.abschl) + P.abschl_text, "",
+    !(thema && ziel) ? P.start_offen : dialog ? P.start_dialog : P.start);
+  return L.join("\n");
+}
+function bsErgebnis(){
+  $("#bs-ergebnis").textContent = bsText();
+  $("#bs-zahl").textContent = T[lang].bs_zahl(bs.gewaehlt.size);
+}
+
 let lang = localStorage.getItem("pt-lang") || ((navigator.language||"de").toLowerCase().startsWith("de") ? "de" : (navigator.language ? "en" : "de"));
 const werte = {};          // Eingaben Baukasten
 const vwerte = {};         // Eingaben Vorlagen
@@ -268,7 +437,7 @@ function setzeSprache(l){
   document.querySelectorAll("[data-t]").forEach(e => { const v = T[l][e.dataset.t]; if (v) e.textContent = v; });
   document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
   document.querySelector(".sprache").setAttribute("aria-label", T[l].sprache);
-  baueBausteine(); baueVorlagen(); $("#wissen-inhalt").innerHTML = WISSEN[l];
+  baueBausteine(); baueVorlagen(); baueBrainstorming(); $("#wissen-inhalt").innerHTML = WISSEN[l];
 }
 
 function baueBausteine(){
@@ -347,6 +516,8 @@ tabs.forEach((t,i) => {
 const start = tabs.find(t => "#" + t.id.slice(2) === location.hash); if (start) waehle(start);
 
 document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => setzeSprache(b.dataset.lang));
+["#bs-thema","#bs-ziel"].forEach(id => $(id).addEventListener("input", bsErgebnis));
+$("#bs-kopieren").onclick = () => kopiere(bsText(), "#bs-meldung");
 $("#bau-kopieren").onclick = () => kopiere(bauText(), "#bau-meldung");
 $("#bau-leeren").onclick = () => { for (const k in werte) delete werte[k]; baueBausteine(); };
 setzeSprache(lang);
