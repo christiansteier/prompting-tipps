@@ -11,6 +11,12 @@ A small static web page for students:
 
 German and English, works offline as a single file, dark mode, keyboard operable. Only your language choice is stored in the browser; your input is not saved.
 
+## Build
+
+Edit `quelle.html`, then run `python3 bauen.py`. It inserts the Lucide icons from `icons/` and the BMad technique icons from `bmad-icons.json` and writes `index.html`.
+
+Colours follow the HSD palette (red, green, petrol, greys) without the HSD logo or typeface.
+
 ## Run locally
 
 ```bash

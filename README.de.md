@@ -9,7 +9,13 @@ Eine kleine statische Webseite für Studierende:
 - **Brainstorming:** Thema und Ziel eintragen, die Rolle der KI wählen (Moderation, Kreativpartner, Ideen für mich) und 3–4 von 13 Techniken. Der kopierte Prompt enthält die ganze Moderationsanleitung und läuft in jedem KI-Chat.
 - **Gut zu wissen:** vier Strategien, fünf Tipps, Regeln für Studienleistungen (eigene Leistung, Kennzeichnen, Datenschutz).
 
-Deutsch und Englisch, läuft offline als Einzeldatei, mit Dunkelmodus und Tastaturbedienung. Gespeichert wird im Browser nur die Sprachwahl, die Eingaben nicht.
+Deutsch und Englisch, läuft offline als Einzeldatei, mit Dunkelmodus (umschaltbar) und Tastaturbedienung. Gespeichert wird im Browser nur die Sprachwahl, die Eingaben nicht.
+
+## Bauen
+
+`quelle.html` bearbeiten, dann `python3 bauen.py` aufrufen. Das Skript setzt die Lucide-Icons aus `icons/` und die BMad-Technik-Icons aus `bmad-icons.json` ein und schreibt `index.html`.
+
+Die Farben folgen der HSD-Palette (Rot, Grün, Petrol, Grautöne), ohne HSD-Logo und ohne HSD-Schrift.
 
 ## Lokal ansehen
 

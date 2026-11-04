@@ -1,6 +1,6 @@
 <!doctype html>
-<!--
-Brainstorming-Teil nach BMad Method, bmad-toolbox, skills/bmad-brainstorming:
+<!-- Erzeugt aus quelle.html mit bauen.py.
+Brainstorming-Teil und Technik-Icons nach BMad Method, bmad-toolbox, skills/bmad-brainstorming:
 MIT License
 
 Copyright (c) 2025 BMad Code, LLC
@@ -37,240 +37,336 @@ for any other purpose. See [TRADEMARK.md](TRADEMARK.md) for detailed guidelines.
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prompting-Tipps fürs Studium</title>
-<meta name="description" content="Prompts zusammenbauen, Vorlagen ausfüllen und kopieren: für wissenschaftliches Arbeiten und Prüfungsvorbereitung.">
+<meta name="description" content="Prompts bauen, Vorlagen ausfüllen, Brainstorming mit KI: für wissenschaftliches Arbeiten und Prüfungsvorbereitung.">
+<script>
+try { const t = localStorage.getItem("pt-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <style>
-:root{
-  --bg:#f5f5f7;--card:#fff;--text:#1d1d1f;--leise:#5c5c63;--linie:#d2d2d7;
-  --akzent:#0a5fb4;--akzent-text:#fff;--feld:#fff;--marke:#fff3c4;--marke-text:#5a4300;
-  --radius:14px;--schatten:0 1px 3px rgba(0,0,0,.08);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+:root {
+  --bg:#f4f4f2; --surface:#fff; --ink:#1a1a1a; --muted:#5f5f5f; --line:#e2e2de; --control:#ebebe7; --raised:#fff;
+  --rot:#e60026; --rot-text:#c4001f; --gruen:#2e7d46; --petrol:#004c5f;
+  --shadow:rgba(0,0,0,.06); --fokus:#004c5f;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#000;--card:#1c1c1e;--text:#f5f5f7;--leise:#a1a1a6;--linie:#3a3a3c;
-  --akzent:#4da3ff;--akzent-text:#000;--feld:#2c2c2e;--marke:#4a3b00;--marke-text:#ffe08a;
+@media (prefers-color-scheme:dark) { :root:not([data-theme="light"]) {
+  --bg:#111214; --surface:#1b1c1f; --ink:#ececec; --muted:#a3a3a3; --line:#2e3034; --control:#25272b; --raised:#33363b;
+  --rot:#e60026; --rot-text:#ff6b7f; --gruen:#8fd16a; --petrol:#5fb3c9; --shadow:rgba(0,0,0,.45); --fokus:#5fb3c9; color-scheme:dark;
 }}
-@media (prefers-contrast:more){:root{--leise:var(--text);--linie:var(--text)}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-size:1.0625rem;line-height:1.5}
-a{color:var(--akzent)}
-.huelle{max-width:52rem;margin:0 auto;padding:1rem 1rem 4rem}
-header.kopf{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.5rem 0 1rem}
-h1{font-size:clamp(1.6rem,4vw,2.2rem);margin:.25rem 0 .25rem;letter-spacing:-.01em}
-.unter{color:var(--leise);margin:0 0 1rem}
-h2{font-size:1.3rem;margin:0 0 .75rem}
-h3{font-size:1.05rem;margin:0 0 .5rem}
-button,.knopf{font:inherit;min-height:44px;min-width:44px;border-radius:10px;border:1px solid var(--linie);background:var(--card);color:var(--text);padding:.5rem 1rem;cursor:pointer}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--akzent);outline-offset:2px}
-.sprache{display:flex;gap:.25rem}
-.sprache button[aria-pressed=true]{background:var(--akzent);color:var(--akzent-text);border-color:var(--akzent)}
-nav.reiter{display:flex;gap:.25rem;background:var(--linie);padding:.25rem;border-radius:12px;margin:0 0 1.25rem;position:sticky;top:.5rem;z-index:2}
-nav.reiter button{flex:1;border:0;background:transparent;font-weight:600}
-nav.reiter button[aria-selected=true]{background:var(--card);box-shadow:var(--schatten)}
-@media (max-width:34rem){nav.reiter{display:grid;grid-template-columns:1fr 1fr}}
-.karte{background:var(--card);border-radius:var(--radius);box-shadow:var(--schatten);padding:1.25rem;margin:0 0 1rem}
-.raster{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
-label{display:block;font-weight:600;margin:.75rem 0 .25rem}
-label small{font-weight:400;color:var(--leise)}
-input,textarea{width:100%;font:inherit;padding:.6rem .75rem;border-radius:10px;border:1px solid var(--linie);background:var(--feld);color:var(--text);min-height:44px}
-textarea{min-height:5rem;resize:vertical}
-.ergebnis{white-space:pre-wrap;background:var(--bg);border:1px solid var(--linie);border-radius:10px;padding:1rem;margin:.75rem 0;font-size:1rem}
-.platz{background:var(--marke);color:var(--marke-text);border-radius:4px;padding:0 .2em}
-.aktionen{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-.haupt{background:var(--akzent);color:var(--akzent-text);border-color:var(--akzent);font-weight:600}
-.meldung{color:var(--leise);min-height:1.5em}
-.filter{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 1rem}
-.filter button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
-.liste{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));margin-bottom:1rem}
-.liste button{text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;padding:.75rem 1rem}
-.liste button[aria-current=true]{border:2px solid var(--akzent)}
-.liste .art{font-size:.85rem;color:var(--leise)}
-.baustein{display:grid;grid-template-columns:2.25rem 1fr;gap:.75rem;align-items:start;margin:.5rem 0}
-.nr{width:2.25rem;height:2.25rem;border-radius:50%;background:var(--akzent);color:var(--akzent-text);display:grid;place-items:center;font-weight:700}
-.merksatz{border-left:4px solid var(--akzent);padding:.25rem 0 .25rem 1rem;margin:1rem 0 0}
-table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid var(--linie);vertical-align:top}
-footer{color:var(--leise);font-size:.9rem;margin-top:2rem}
-[hidden]{display:none!important}
-fieldset.rollen{border:0;padding:0;margin:1rem 0 0;min-inline-size:0}
-fieldset.rollen legend{font-weight:600;padding:0;margin-bottom:.25rem}
-.wahl{font-weight:400;display:flex;gap:.75rem;align-items:flex-start;border:1px solid var(--linie);border-radius:10px;padding:.75rem 1rem;margin:.5rem 0;cursor:pointer;min-height:44px}
-.wahl:has(input:checked){border:2px solid var(--akzent);padding:calc(.75rem - 1px) calc(1rem - 1px)}
-.wahl input{width:1.25rem;height:1.25rem;min-height:0;margin:.15rem 0 0;flex:none;accent-color:var(--akzent)}
-.wahl b{display:block}
-.wahl span{color:var(--leise);font-size:.95rem}
-.tgruppe{margin:1rem 0 .25rem;font-size:1rem}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:root[data-theme="dark"] {
+  --bg:#111214; --surface:#1b1c1f; --ink:#ececec; --muted:#a3a3a3; --line:#2e3034; --control:#25272b; --raised:#33363b;
+  --rot:#e60026; --rot-text:#ff6b7f; --gruen:#8fd16a; --petrol:#5fb3c9; --shadow:rgba(0,0,0,.45); --fokus:#5fb3c9; color-scheme:dark;
+}
+@media (prefers-contrast:more) { :root { --muted:var(--ink); --line:var(--ink); } }
+@media (prefers-reduced-motion:reduce) { * { transition:none !important; animation:none !important; scroll-behavior:auto !important; } }
+
+* { box-sizing:border-box; }
+body { margin:0; font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); }
+a { color:var(--rot-text); }
+button { font:inherit; color:inherit; border:0; cursor:pointer; background:none; }
+:focus-visible { outline:3px solid var(--fokus); outline-offset:2px; }
+.wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
+[hidden] { display:none !important; }
+
+/* Kopf */
+header { background:var(--surface); border-bottom:1px solid var(--line); box-shadow:0 2px 12px var(--shadow); padding:20px 0 14px; }
+.titlerow { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.marke { flex:1 1 320px; }
+.marke { display:flex; gap:14px; align-items:flex-start; }
+.marke::before { content:""; flex:none; width:10px; height:46px; background:var(--rot); margin-top:3px; }
+h1 { margin:0 0 2px; font-size:26px; letter-spacing:-.02em; line-height:1.2; }
+.sub { margin:0; color:var(--muted); font-size:14.5px; max-width:70ch; }
+.werkzeuge { display:flex; gap:6px; flex:none; }
+.seg { display:inline-flex; background:var(--control); border-radius:10px; padding:3px; gap:2px; }
+.seg button { min-height:40px; min-width:44px; padding:0 14px; border-radius:8px; font-weight:600; font-size:14.5px; color:var(--muted); }
+.seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background:var(--raised); color:var(--ink); box-shadow:0 1px 3px var(--shadow); }
+.themebtn { width:46px; height:46px; border-radius:10px; background:var(--control); display:inline-flex; align-items:center; justify-content:center; }
+.themebtn svg { width:20px; height:20px; }
+nav.reiter { margin-top:16px; display:flex; }
+nav.reiter .seg { flex-wrap:wrap; }
+nav.reiter button { min-height:44px; padding:0 18px; display:inline-flex; align-items:center; gap:8px; }
+nav.reiter button svg { width:18px; height:18px; }
+nav.reiter button[aria-selected="true"] { color:var(--rot-text); }
+
+main.wrap { padding-top:24px; padding-bottom:60px; }
+
+/* Bausteine */
+.glabel { font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; }
+.zeile { display:grid; grid-template-columns:150px 1fr; gap:14px; align-items:start; padding:12px 0; border-bottom:1px solid var(--line); }
+.zeile:last-child { border-bottom:0; }
+.zeile .glabel { padding-top:12px; }
+.feld { width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--bg); color:var(--ink); font:inherit; font-size:15px; }
+textarea.feld { resize:vertical; min-height:72px; }
+.feld:focus { outline:2px solid var(--fokus); outline-offset:-1px; }
+.frage { color:var(--muted); font-size:13.5px; margin:0 0 6px; }
+
+.karte { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:0 1px 3px var(--shadow); }
+.zweispaltig { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:18px; align-items:start; }
+.klebt { position:sticky; top:16px; }
+.ergebnis { white-space:pre-wrap; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px; font-size:14.5px; min-height:120px; max-height:60vh; overflow:auto; }
+.platz { background:color-mix(in srgb, var(--rot) 14%, transparent); color:var(--rot-text); border-radius:4px; padding:0 .2em; font-weight:600; }
+.leise { color:var(--muted); font-size:13.5px; }
+.kopf2 { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+.kopf2 h2 { margin:0; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+.kopieren { min-height:46px; padding:0 24px; background:var(--rot); color:#fff; border-radius:10px; font-weight:700; font-size:15px; display:inline-flex; align-items:center; gap:8px; }
+.kopieren:hover { filter:brightness(1.08); }
+.kopieren svg { width:18px; height:18px; }
+.zweit { min-height:44px; padding:0 16px; border-radius:10px; background:var(--control); font-weight:600; font-size:14px; }
+.merksatz { margin:16px 0 0; padding:10px 14px; border-left:4px solid var(--rot); background:color-mix(in srgb, var(--rot) 6%, var(--surface)); border-radius:0 10px 10px 0; font-size:14.5px; }
+
+/* Icons in Kacheln (Stil wie BMAD-Karten) */
+.ico { width:42px; height:42px; flex:none; color:var(--c, var(--rot-text)); }
+.ico24 { width:42px; height:42px; flex:none; border-radius:12px; display:grid; place-items:center; color:var(--c, var(--rot-text)); background:color-mix(in srgb, var(--c, var(--rot)) 12%, transparent); }
+.ico24 svg { width:22px; height:22px; }
+
+/* Abschnitte und Kartenraster */
+section.gruppe { margin:0 0 26px; }
+section.gruppe > h2 { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--c); margin:0 0 10px; border-bottom:1px solid color-mix(in srgb, var(--c) 30%, var(--line)); padding-bottom:6px; }
+section.gruppe > h2 .cnt { opacity:.6; margin-left:6px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:10px; }
+.kachel { display:flex; gap:12px; align-items:flex-start; text-align:left; width:100%; background:color-mix(in srgb, var(--c) 5%, var(--surface)); border:1px solid color-mix(in srgb, var(--c) 20%, var(--line)); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .12s, box-shadow .12s, background .12s; min-height:44px; font-weight:400; }
+.kachel:hover { border-color:color-mix(in srgb, var(--c) 50%, var(--surface)); }
+.kachel input { margin-top:3px; width:18px; height:18px; accent-color:var(--c); flex:none; }
+.kachel:has(input:checked), .kachel[aria-current="true"] { border-color:var(--c); background:color-mix(in srgb, var(--c) 12%, var(--surface)); box-shadow:0 0 0 2px color-mix(in srgb, var(--c) 30%, transparent); }
+.kachel .n { font-weight:650; display:block; }
+.kachel .d { color:var(--muted); font-size:13.5px; display:block; margin-top:2px; }
+.kachel .gf { color:var(--c); font-size:11.5px; display:block; margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
+:root[data-theme="dark"] section.gruppe > h2, :root[data-theme="dark"] .kachel .gf { color:color-mix(in srgb, var(--c) 60%, #fff); }
+@media (prefers-color-scheme:dark) { :root:not([data-theme="light"]) section.gruppe > h2, :root:not([data-theme="light"]) .kachel .gf { color:color-mix(in srgb, var(--c) 60%, #fff); } }
+
+/* Brainstorming-Komponist wie bei Ingo */
+.composer { display:flex; flex-direction:column; gap:10px; }
+.grp { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.grp > .glabel { min-width:96px; }
+.grp .feld { flex:1 1 320px; min-width:0; }
+.modehint { flex:1 1 240px; min-width:0; font-size:13.5px; color:var(--muted); font-style:italic; }
+.pill { font-size:13.5px; color:var(--muted); background:var(--control); padding:8px 14px; border-radius:20px; }
+.pill b { color:var(--rot-text); }
+.pill.warn b { color:var(--rot-text); }
+.bar { display:flex; gap:10px 14px; align-items:center; flex-wrap:wrap; }
+.bar .kopieren { margin-left:auto; }
+.chips { display:flex; gap:7px; flex-wrap:wrap; }
+.chip { min-height:40px; font-size:13px; padding:0 14px; border-radius:20px; color:#fff; background:var(--cc); font-weight:600; }
+.chip.aus { background:var(--control); color:var(--muted); }
+.chip:hover { filter:brightness(1.08); }
+details.vorschau { margin-top:14px; }
+details.vorschau summary { cursor:pointer; min-height:44px; display:flex; align-items:center; gap:8px; font-weight:600; color:var(--muted); list-style:none; }
+details.vorschau summary::-webkit-details-marker { display:none; }
+details.vorschau summary::before { content:"›"; font-size:20px; line-height:1; transition:transform .15s; }
+details.vorschau[open] summary::before { transform:rotate(90deg); }
+
+/* Gut zu wissen */
+.strat .zitat { font-style:italic; font-size:13.5px; margin-top:6px; display:block; }
+ol.tipps { margin:0; padding:0; list-style:none; counter-reset:t; display:grid; gap:10px; }
+ol.tipps li { counter-increment:t; display:grid; grid-template-columns:36px 1fr; gap:12px; align-items:start; }
+ol.tipps li::before { content:counter(t); width:32px; height:32px; border-radius:50%; background:var(--rot); color:#fff; display:grid; place-items:center; font-weight:700; font-size:14px; }
+.regeln { display:grid; gap:10px; }
+.regeln > div { display:flex; gap:12px; align-items:flex-start; }
+.kurs { display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--ink); }
+.kurs .n { color:var(--rot-text); }
+
+/* Rückmeldung */
+.toast { position:fixed; left:50%; bottom:24px; transform:translate(-50%, 120px); background:var(--gruen); color:#fff; padding:13px 20px; border-radius:12px; font-weight:700; box-shadow:0 6px 24px rgba(0,0,0,.25); transition:transform .25s ease; z-index:20; max-width:calc(100% - 32px); text-align:center; }
+:root[data-theme="dark"] .toast { color:#111; }
+.toast.zeigen { transform:translate(-50%, 0); }
+.toast.fehler { background:var(--rot-text); }
+
+footer { text-align:center; color:var(--muted); font-size:12.5px; padding:10px 24px 34px; }
+footer p { margin:4px 0; }
+
+@media (max-width:820px) {
+  .zweispaltig { grid-template-columns:1fr; }
+  .klebt { position:static; }
+  .zeile { grid-template-columns:1fr; gap:4px; }
+  .zeile .glabel { padding-top:0; }
+}
+@media (max-width:560px) {
+  .wrap { padding:0 16px; }
+  h1 { font-size:22px; }
+  nav.reiter .seg { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+  nav.reiter button { justify-content:center; padding:0 8px; }
+  .grid { grid-template-columns:1fr; }
+  .bar .kopieren { margin-left:0; width:100%; justify-content:center; }
+}
 </style>
 </head>
 <body>
-<div class="huelle">
-  <header class="kopf">
-    <span></span>
-    <div class="sprache" role="group" aria-label="Sprache / Language">
-      <button type="button" data-lang="de" aria-pressed="true">DE</button>
-      <button type="button" data-lang="en" aria-pressed="false">EN</button>
-    </div>
-  </header>
-  <h1 data-t="titel">Prompting-Tipps fürs Studium</h1>
-  <p class="unter" data-t="unter">Prompt zusammenbauen, Vorlage ausfüllen, kopieren und in den KI-Chat einfügen.</p>
-
-  <nav class="reiter" role="tablist" aria-label="Bereiche">
-    <button role="tab" id="t-bauen" aria-controls="p-bauen" aria-selected="true" data-t="r_bauen">Prompt bauen</button>
-    <button role="tab" id="t-vorlagen" aria-controls="p-vorlagen" aria-selected="false" tabindex="-1" data-t="r_vorlagen">Vorlagen</button>
-    <button role="tab" id="t-brainstorming" aria-controls="p-brainstorming" aria-selected="false" tabindex="-1" data-t="r_brain">Brainstorming</button>
-    <button role="tab" id="t-wissen" aria-controls="p-wissen" aria-selected="false" tabindex="-1" data-t="r_wissen">Gut zu wissen</button>
-  </nav>
-
-  <main>
-    <section id="p-bauen" role="tabpanel" aria-labelledby="t-bauen">
-      <div class="karte">
-        <h2 data-t="bauen_h">Fünf Bausteine</h2>
-        <p data-t="bauen_p">Füllt aus, was ihr wisst. Leere Bausteine fallen weg.</p>
-        <div id="bausteine"></div>
-        <h3 data-t="euer_prompt">Euer Prompt</h3>
-        <div class="ergebnis" id="bau-ergebnis" aria-live="polite"></div>
-        <div class="aktionen">
-          <button type="button" class="haupt" id="bau-kopieren" data-t="kopieren">Kopieren</button>
-          <button type="button" id="bau-leeren" data-t="leeren">Leeren</button>
-          <span class="meldung" id="bau-meldung" role="status"></span>
+<header>
+  <div class="wrap">
+    <div class="titlerow">
+      <div class="marke"><div>
+        <h1 data-t="titel">Prompting-Tipps fürs Studium</h1>
+        <p class="sub" data-t="unter">Prompt bauen, Vorlage ausfüllen oder ein Brainstorming starten. Dann kopieren und in den KI-Chat einfügen.</p>
+      </div></div>
+      <div class="werkzeuge">
+        <div class="seg" role="group" aria-label="Sprache / Language">
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
         </div>
+        <button type="button" class="themebtn" id="thema-knopf" aria-label="Hell oder dunkel"></button>
+      </div>
+    </div>
+    <nav class="reiter" aria-label="Bereiche">
+      <div class="seg" role="tablist">
+        <button role="tab" id="t-bauen" aria-controls="p-bauen" aria-selected="true" data-icon="square-pen"><span data-t="r_bauen">Prompt bauen</span></button>
+        <button role="tab" id="t-vorlagen" aria-controls="p-vorlagen" aria-selected="false" tabindex="-1" data-icon="notebook-pen"><span data-t="r_vorlagen">Vorlagen</span></button>
+        <button role="tab" id="t-brainstorming" aria-controls="p-brainstorming" aria-selected="false" tabindex="-1" data-icon="lightbulb"><span data-t="r_brain">Brainstorming</span></button>
+        <button role="tab" id="t-wissen" aria-controls="p-wissen" aria-selected="false" tabindex="-1" data-icon="book-open"><span data-t="r_wissen">Gut zu wissen</span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="p-bauen" role="tabpanel" aria-labelledby="t-bauen">
+    <div class="zweispaltig">
+      <div class="karte">
+        <div class="kopf2"><h2 data-t="bauen_h">Fünf Bausteine</h2><span class="leise" data-t="bauen_p">Leere Bausteine fallen weg.</span></div>
+        <div id="bausteine"></div>
+      </div>
+      <div class="karte klebt">
+        <div class="kopf2"><h2 data-t="euer_prompt">Euer Prompt</h2><button type="button" class="zweit" id="bau-leeren" data-t="leeren">Leeren</button></div>
+        <div class="ergebnis" id="bau-ergebnis"></div>
+        <div class="bar" style="margin-top:12px"><button type="button" class="kopieren" id="bau-kopieren" data-icon="clipboard-list"><span data-t="kopieren">Prompt kopieren</span></button></div>
         <p class="merksatz" data-t="merksatz">Der Prüfauftrag ersetzt das Nachprüfen nicht. Er zeigt, wo ihr anfangen solltet.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="p-vorlagen" role="tabpanel" aria-labelledby="t-vorlagen" hidden>
-      <div class="filter" role="group" id="filter"></div>
-      <div class="liste" id="liste"></div>
-      <div class="karte" id="vorlage"></div>
-    </section>
+  <section id="p-vorlagen" role="tabpanel" aria-labelledby="t-vorlagen" hidden>
+    <div class="chips" id="filter" role="group" style="margin-bottom:18px"></div>
+    <div class="zweispaltig">
+      <div id="liste"></div>
+      <div class="karte klebt" id="vorlage"></div>
+    </div>
+  </section>
 
-    <section id="p-brainstorming" role="tabpanel" aria-labelledby="t-brainstorming" hidden>
-      <div class="karte">
-        <h2 data-t="bs_h">Brainstorming mit KI</h2>
-        <p data-t="bs_p">Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.</p>
-        <label for="bs-thema" data-t="bs_thema">Thema</label>
-        <input id="bs-thema">
-        <label for="bs-ziel" data-t="bs_ziel">Ziel</label>
-        <input id="bs-ziel">
-        <fieldset class="rollen"><legend data-t="bs_rolle">Rolle der KI</legend><div id="bs-rollen"></div></fieldset>
+  <section id="p-brainstorming" role="tabpanel" aria-labelledby="t-brainstorming" hidden>
+    <div class="karte" style="margin-bottom:22px">
+      <p class="leise" style="margin:0 0 12px" data-t="bs_p">Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.</p>
+      <div class="composer">
+        <div class="grp"><label class="glabel" for="bs-thema" data-t="bs_thema">Thema</label><input id="bs-thema" class="feld"></div>
+        <div class="grp"><label class="glabel" for="bs-ziel" data-t="bs_ziel">Ziel</label><input id="bs-ziel" class="feld"></div>
+        <div class="grp"><span class="glabel" id="bs-rolle-l" data-t="bs_rolle">Rolle</span><div class="seg" id="bs-rollen" role="radiogroup" aria-labelledby="bs-rolle-l"></div><span class="modehint" id="bs-hint"></span></div>
+        <div class="grp bar"><span class="glabel" data-t="bs_tech">Techniken</span><span class="pill" id="bs-zahl" aria-live="polite"></span>
+          <button type="button" class="kopieren" id="bs-kopieren" data-icon="clipboard-list"><span data-t="kopieren">Prompt kopieren</span></button></div>
+        <div class="grp"><span class="glabel" data-t="bs_springen">Springen zu</span><div class="chips" id="bs-chips"></div></div>
       </div>
-      <div class="karte">
-        <h2 data-t="bs_tech">Techniken</h2>
-        <p class="meldung" id="bs-zahl" aria-live="polite"></p>
-        <div id="bs-techniken"></div>
-      </div>
-      <div class="karte">
-        <h2 data-t="euer_prompt">Euer Prompt</h2>
-        <div class="ergebnis" id="bs-ergebnis"></div>
-        <div class="aktionen">
-          <button type="button" class="haupt" id="bs-kopieren" data-t="kopieren">Kopieren</button>
-          <span class="meldung" id="bs-meldung" role="status"></span>
-        </div>
-        <p class="merksatz" data-t="bs_tipp">Im Chat schreibt ihr „Liste“ für alle bisherigen Ideen und „Abschluss“ für die Auswertung.</p>
-      </div>
-    </section>
+      <details class="vorschau"><summary data-t="bs_ansehen">Prompt ansehen</summary><div class="ergebnis" id="bs-ergebnis"></div></details>
+    </div>
+    <div id="bs-techniken"></div>
+    <p class="merksatz" data-t="bs_tipp">Im Chat schreibt ihr „Liste“ für alle bisherigen Ideen und „Abschluss“ für die Auswertung.</p>
+  </section>
 
-    <section id="p-wissen" role="tabpanel" aria-labelledby="t-wissen" hidden>
-      <div id="wissen-inhalt"></div>
-    </section>
-  </main>
+  <section id="p-wissen" role="tabpanel" aria-labelledby="t-wissen" hidden>
+    <div id="wissen-inhalt"></div>
+  </section>
+</main>
 
-  <footer>
-    <p data-t="bs_herkunft">Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt.</p>
-    <p data-t="fuss">Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.</p>
-  </footer>
-</div>
+<footer>
+  <p data-t="fuss">Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.</p>
+  <p data-t="bs_herkunft">Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt. Icons: Lucide (ISC) und BMad Method.</p>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+const LUCIDE = {"book-a":"<path d=\"M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20\" /><path d=\"m8 13 4-7 4 7\" /><path d=\"M9.1 11h5.7\" />","book-open":"<path d=\"M12 5v16\" /><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\" />","brain":"<path d=\"M12 18V5\" /><path d=\"M15 13a4.17 4.17 0 01-3-4 4.17 4.17 0 01-3 4\" /><path d=\"M17.707 6.294A3 3 0 1012 5a3 3 0 10-5.707 1.294\" /><path d=\"M17.996 5.125a4 4 0 012.526 5.77\" /><path d=\"M18 18a4 4 0 002-7.465\" /><path d=\"M19.967 17.482a4 4 0 11-7.967.517 4 4 0 11-7.967-.517\" /><path d=\"M6 18a4 4 0 01-2-7.465\" /><path d=\"M6.004 5.125a4 4 0 00-2.526 5.77\" />","clipboard-list":"<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\" /><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\" /><path d=\"M12 11h4\" /><path d=\"M12 16h4\" /><path d=\"M8 11h.01\" /><path d=\"M8 16h.01\" />","compass":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z\" />","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\" /><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\" />","file-check":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" /><path d=\"M14 2v5a1 1 0 0 0 1 1h5\" /><path d=\"m9 15 2 2 4-4\" />","graduation-cap":"<path d=\"M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z\" /><path d=\"M22 10v6\" /><path d=\"M6 12.5V16a6 3 0 0 0 12 0v-3.5\" />","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\" /><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\" /><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\" />","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\" /><path d=\"M9 18h6\" /><path d=\"M10 22h4\" />","link":"<path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\" /><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\" />","list-checks":"<path d=\"M13 5h8\" /><path d=\"M13 12h8\" /><path d=\"M13 19h8\" /><path d=\"m3 17 2 2 4-4\" /><path d=\"m3 7 2 2 4-4\" />","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\" /><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\" /><path d=\"M12 17h.01\" />","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\" />","notebook-pen":"<path d=\"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4\" /><path d=\"M2 6h4\" /><path d=\"M2 10h4\" /><path d=\"M2 14h4\" /><path d=\"M2 18h4\" /><path d=\"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\" />","pen-tool":"<path d=\"m18 13-.654-4.736a4 4 0 00-2.756-3.266l-9.163-2.9a2 2 0 00-2.017.493l-.82.819a2 2 0 00-.492 2.017l2.9 9.163a4 4 0 003.266 2.756L13 18\" /><path d=\"M18.648 12.352a1.205 1.205 0 011.704 0l1.296 1.296a1.205 1.205 0 010 1.704l-6.296 6.296a1.205 1.205 0 01-1.704 0l-1.296-1.296a1.205 1.205 0 010-1.704z\" /><path d=\"m3 3 6.586 6.586\" /><circle cx=\"11\" cy=\"11\" r=\"2\" />","scale":"<path d=\"M12 3v18\" /><path d=\"m19 8 3 8a5 5 0 0 1-6 0zV7\" /><path d=\"M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1\" /><path d=\"m5 8 3 8a5 5 0 0 1-6 0zV7\" /><path d=\"M7 21h10\" />","scan-text":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\" /><path d=\"M17 3h2a2 2 0 0 1 2 2v2\" /><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\" /><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\" /><path d=\"M7 8h8\" /><path d=\"M7 12h10\" /><path d=\"M7 16h6\" />","search-check":"<path d=\"m8 11 2 2 4-4\" /><circle cx=\"11\" cy=\"11\" r=\"8\" /><path d=\"m21 21-4.3-4.3\" />","search":"<path d=\"m21 21-4.34-4.34\" /><circle cx=\"11\" cy=\"11\" r=\"8\" />","shield-check":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" /><path d=\"m9 12 2 2 4-4\" />","signpost":"<path d=\"M12 13v8\" /><path d=\"M12 3v3\" /><path d=\"M2.354 10.354a1.207 1.207 0 0 1 0-1.708l2.06-2.06A2 2 0 0 1 5.828 6h12.344a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H5.828a2 2 0 0 1-1.414-.586z\" />","square-pen":"<path d=\"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\" /><path d=\"M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z\" />","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\" /><path d=\"M12 2v2\" /><path d=\"M12 20v2\" /><path d=\"m4.93 4.93 1.41 1.41\" /><path d=\"m17.66 17.66 1.41 1.41\" /><path d=\"M2 12h2\" /><path d=\"M20 12h2\" /><path d=\"m6.34 17.66-1.41 1.41\" /><path d=\"m19.07 4.93-1.41 1.41\" />","target":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><circle cx=\"12\" cy=\"12\" r=\"6\" /><circle cx=\"12\" cy=\"12\" r=\"2\" />","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><path d=\"M16 3.128a4 4 0 0 1 0 7.744\" /><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\" /><circle cx=\"9\" cy=\"7\" r=\"4\" />"};
+const BMAD = {"Question Storming":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 16 a3.2 3.2 0 1 1 3.2 3.2 v2\"/><path d=\"M26 13 a3.6 3.6 0 1 1 3.6 3.6 v2.4\"/></g><circle cx=\"17.2\" cy=\"27\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"29.6\" cy=\"25.6\" r=\"1.6\" fill=\"currentColor\"/>","Starbursting":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 8 V15 M22 29 V36 M8 22 H15 M29 22 H36 M12 12 L17 17 M27 27 L32 32 M32 12 L27 17 M12 32 L17 27\"/></g><path d=\"M19.5 19 a3.2 3.2 0 1 1 3 4 v1.2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/>","How Might We":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 13 H33 a2 2 0 0 1 2 2 V27 a2 2 0 0 1 -2 2 H24 L19 34 V29 H11 a2 2 0 0 1 -2 -2 V15 a2 2 0 0 1 2 -2 Z\"/></g><path d=\"M19 19 a3.2 3.2 0 1 1 3.4 3.4 v1.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><circle cx=\"22.4\" cy=\"27\" r=\"1.4\" fill=\"currentColor\"/>","Mind Mapping":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"22\" cy=\"22\" r=\"4\"/><circle cx=\"11\" cy=\"13\" r=\"2.2\"/><circle cx=\"33\" cy=\"13\" r=\"2.2\"/><circle cx=\"10\" cy=\"28\" r=\"2.2\"/><circle cx=\"32\" cy=\"31\" r=\"2.2\"/><path d=\"M19 19.5 L12.5 14.5 M25 19.5 L31.5 14.5 M19 24.5 L11.5 27 M25.5 24 L30.5 29.5\"/></g>","What If Scenarios":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 17 a4 4 0 1 1 4 4 v3\"/></g><circle cx=\"22\" cy=\"30\" r=\"1.6\" fill=\"currentColor\"/>","Analogical Thinking":"<circle cx=\"15\" cy=\"22\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><rect x=\"25\" y=\"16\" width=\"12\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"M19 20 q2 2 0 4 M23 20 q-2 2 0 4\" stroke=\"currentColor\" stroke-width=\"1.6\" fill=\"none\"/>","Reverse Brainstorming":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 18 H28 a4 4 0 0 1 0 8 H16\"/><path d=\"M19 15 L13 18 L19 21 M22 23 L16 26 L22 29\"/></g>","Worst Possible Idea":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 11 v10 h-5 l10 12 10 -12 h-5 v-10 z\"/></g>","Assumption Reversal":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 14 V30\"/><path d=\"M11.5 25 L16 30 L20.5 25\"/><path d=\"M28 30 V14\"/><path d=\"M23.5 19 L28 14 L32.5 19\"/></g>","Five Whys":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"14\" cy=\"13\" r=\"2.4\"/><circle cx=\"22\" cy=\"22\" r=\"2.4\"/><circle cx=\"30\" cy=\"31\" r=\"2.4\"/><path d=\"M15.6 14.8 L20.4 20.2 M23.6 23.8 L28.4 29.2\"/></g>","Six Thinking Hats":"<path d=\"M14 26 q8 -5 16 0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M17 26 q-6 1 -8 3 q13 4 26 0 q-2 -2 -8 -3\" fill=\"currentColor\" fill-opacity=\".22\"/><path d=\"M17 26 c-1 -8 11 -8 10 0\" fill=\"currentColor\" fill-opacity=\".5\"/>","Disney Method":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"14\" cy=\"22\" r=\"4.5\"/><circle cx=\"22\" cy=\"22\" r=\"4.5\"/><circle cx=\"30\" cy=\"22\" r=\"4.5\"/></g>","Backcasting":"<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M30 11 V33\"/></g><path d=\"M30 13 L20 16.5 L30 20 Z\" fill=\"currentColor\"/><path d=\"M28 27 H14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-dasharray=\"1.5 3\"/><path d=\"M18 23 L14 27 L18 31\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"};
+const ico = (n, cls = "ico24") => `<span class="${cls}" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[n] || ""}</svg></span>`;
+const svgI = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LUCIDE[n] || ""}</svg>`;
+const bico = n => `<svg class="ico" viewBox="0 0 44 44" aria-hidden="true"><rect x="1.5" y="1.5" width="41" height="41" rx="12" fill="currentColor" fill-opacity="0.12"/>${BMAD[n] || ""}</svg>`;
+const FARBE = { rot:"var(--rot-text)", petrol:"var(--petrol)", gruen:"var(--gruen)" };
+const CHIPFARBE = { rot:"#c4001f", petrol:"#004c5f", gruen:"#2e7d46" };
+
 const T = {
-  de:{titel:"Prompting-Tipps fürs Studium",unter:"Prompt zusammenbauen, Vorlage ausfüllen, kopieren und in den KI-Chat einfügen.",
-    r_bauen:"Prompt bauen",r_vorlagen:"Vorlagen",r_wissen:"Gut zu wissen",
-    bauen_h:"Fünf Bausteine",bauen_p:"Füllt aus, was ihr wisst. Leere Bausteine fallen weg.",euer_prompt:"Euer Prompt",
-    kopieren:"Kopieren",leeren:"Leeren",kopiert:"Kopiert. Jetzt in den KI-Chat einfügen.",nicht_kopiert:"Kopieren ging nicht. Text markieren und von Hand kopieren.",
-    leer:"Noch leer. Füllt oben mindestens die Aufgabe aus.",
+  de:{titel:"Prompting-Tipps fürs Studium",unter:"Prompt bauen, Vorlage ausfüllen oder ein Brainstorming starten. Dann kopieren und in den KI-Chat einfügen.",
+    r_bauen:"Prompt bauen",r_vorlagen:"Vorlagen",r_brain:"Brainstorming",r_wissen:"Gut zu wissen",
+    bauen_h:"Fünf Bausteine",bauen_p:"Leere Bausteine fallen weg.",euer_prompt:"Euer Prompt",
+    kopieren:"Prompt kopieren",leeren:"Leeren",kopiert:"Kopiert. Jetzt in den KI-Chat einfügen.",nicht_kopiert:"Kopieren ging nicht. Text markieren und von Hand kopieren.",
+    leer:"Noch leer. Füllt links mindestens die Aufgabe aus.",
     merksatz:"Der Prüfauftrag ersetzt das Nachprüfen nicht. Er zeigt, wo ihr anfangen solltet.",
     alle:"Alle",schreiben:"Wissenschaftlich arbeiten",pruefung:"Für Prüfungen lernen",ausfuellen:"Ausfüllen",
-    hinweis_platz:"Gelb markiert: noch auszufüllen.",
-    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.",
-    sprache:"Sprache",
-    r_brain:"Brainstorming",bs_h:"Brainstorming mit KI",bs_p:"Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.",
-    bs_thema:"Thema",bs_ziel:"Ziel",bs_rolle:"Rolle der KI",bs_tech:"Techniken",
-    bs_zahl:n => n ? `${n} gewählt` + (n > 4 ? ". Mehr als 4 machen die Sitzung lang." : ".") : "Keine gewählt: Die KI schlägt dann selbst 3–4 vor.",
+    hinweis_platz:"Rot markiert: noch auszufüllen.",waehlen:"Links eine Vorlage wählen.",
+    bs_p:"Thema und Ziel eintragen, Rolle und 3–4 Techniken wählen, Prompt kopieren. Die KI führt euch dann Schritt für Schritt durch die Sitzung.",
+    bs_thema:"Thema",bs_ziel:"Ziel",bs_rolle:"Rolle",bs_tech:"Techniken",bs_springen:"Springen zu",bs_ansehen:"Prompt ansehen",
+    bs_zahl:n => n ? `Gewählt <b>${n}</b> · ${n > 4 ? "mehr als 4 machen die Sitzung lang" : "3–4 sind ideal"}` : "Gewählt <b>0</b> · ohne Wahl schlägt die KI selbst 3–4 vor",
     bs_tipp:"Im Chat schreibt ihr „Liste“ für alle bisherigen Ideen und „Abschluss“ für die Auswertung.",
-    bs_herkunft:"Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt."},
-  en:{titel:"Prompting tips for your studies",unter:"Build a prompt, fill in a template, copy it and paste it into the AI chat.",
-    r_bauen:"Build a prompt",r_vorlagen:"Templates",r_wissen:"Good to know",
-    bauen_h:"Five building blocks",bauen_p:"Fill in what you know. Empty blocks are left out.",euer_prompt:"Your prompt",
-    kopieren:"Copy",leeren:"Clear",kopiert:"Copied. Now paste it into the AI chat.",nicht_kopiert:"Copying failed. Select the text and copy it by hand.",
-    leer:"Still empty. Fill in at least the task above.",
+    bs_herkunft:"Brainstorming nach BMad Method (MIT-Lizenz, © 2025 BMad Code, LLC), übersetzt und für das Studium gekürzt. Icons: Lucide (ISC) und BMad Method.",
+    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf. Stand 04.11.2026. Lizenz CC BY-NC-SA 4.0.",
+    sprache:"Sprache",hell:"Helle Darstellung",dunkel:"Dunkle Darstellung",
+    w_strat:"Vier Strategien",w_tipps:"Fünf Tipps",w_regeln:"Regeln für Studienleistungen",w_weiter:"Weiterlernen auf der HSD-Moodle",w_weiter_p:"Beide Kurse mit Selbsteinschreibung, Anmeldung mit HSD-Kennung.",bereiche:"Bereiche"},
+  en:{titel:"Prompting tips for your studies",unter:"Build a prompt, fill in a template or start a brainstorming session. Then copy it and paste it into the AI chat.",
+    r_bauen:"Build a prompt",r_vorlagen:"Templates",r_brain:"Brainstorming",r_wissen:"Good to know",
+    bauen_h:"Five building blocks",bauen_p:"Empty blocks are left out.",euer_prompt:"Your prompt",
+    kopieren:"Copy prompt",leeren:"Clear",kopiert:"Copied. Now paste it into the AI chat.",nicht_kopiert:"Copying failed. Select the text and copy it by hand.",
+    leer:"Still empty. Fill in at least the task on the left.",
     merksatz:"Asking the AI to flag what needs checking does not replace checking. It shows you where to start.",
     alle:"All",schreiben:"Academic writing",pruefung:"Studying for exams",ausfuellen:"Fill in",
-    hinweis_platz:"Highlighted in yellow: still to fill in.",
-    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf (University of Applied Sciences). As of 4 Nov 2026. Licence CC BY-NC-SA 4.0.",
-    sprache:"Language",
-    r_brain:"Brainstorming",bs_h:"Brainstorming with AI",bs_p:"Enter topic and goal, choose a role and 3–4 techniques, copy the prompt. The AI then guides you through the session step by step.",
-    bs_thema:"Topic",bs_ziel:"Goal",bs_rolle:"Role of the AI",bs_tech:"Techniques",
-    bs_zahl:n => n ? `${n} selected` + (n > 4 ? ". More than 4 make the session long." : ".") : "None selected: the AI will suggest 3–4 itself.",
+    hinweis_platz:"Marked in red: still to fill in.",waehlen:"Choose a template on the left.",
+    bs_p:"Enter topic and goal, choose a role and 3–4 techniques, copy the prompt. The AI then guides you through the session step by step.",
+    bs_thema:"Topic",bs_ziel:"Goal",bs_rolle:"Role",bs_tech:"Techniques",bs_springen:"Jump to",bs_ansehen:"Show prompt",
+    bs_zahl:n => n ? `Selected <b>${n}</b> · ${n > 4 ? "more than 4 make the session long" : "3–4 is ideal"}` : "Selected <b>0</b> · without a choice the AI suggests 3–4",
     bs_tipp:"In the chat, type “list” to see all ideas so far and “wrap up” for the summary.",
-    bs_herkunft:"Brainstorming based on BMad Method (MIT licence, © 2025 BMad Code, LLC), adapted and shortened for students."}
+    bs_herkunft:"Brainstorming based on BMad Method (MIT licence, © 2025 BMad Code, LLC), adapted and shortened for students. Icons: Lucide (ISC) and BMad Method.",
+    fuss:"Christian-Maximilian Steier, Hochschule Düsseldorf (University of Applied Sciences). As of 4 Nov 2026. Licence CC BY-NC-SA 4.0.",
+    sprache:"Language",hell:"Light appearance",dunkel:"Dark appearance",
+    w_strat:"Four strategies",w_tipps:"Five tips",w_regeln:"Rules for coursework",w_weiter:"Keep learning on HSD Moodle",w_weiter_p:"Both courses are open for self-enrolment with your HSD account. Both are in German.",bereiche:"Sections"}
 };
 
 const BAUSTEINE = [
-  {k:"kontext",de:["Kontext","Wofür brauche ich das?","Ich bin im ersten Semester Medieninformatik und bereite ein Referat vor."],
+  {k:"kontext",i:"compass",de:["Kontext","Wofür brauche ich das?","Ich bin im ersten Semester Medieninformatik und bereite ein Referat vor."],
                en:["Context","What do I need this for?","I am a first-year media informatics student preparing a presentation."]},
-  {k:"rolle",de:["Rolle","Wie soll geantwortet werden?","Erkläre wie ein Tutor, nicht wie ein Lexikon."],
+  {k:"rolle",i:"users",de:["Rolle","Wie soll geantwortet werden?","Erkläre wie ein Tutor, nicht wie ein Lexikon."],
              en:["Role","How should it answer?","Explain like a tutor, not like an encyclopedia."]},
-  {k:"aufgabe",de:["Aufgabe","Was genau?","Erkläre den Unterschied zwischen Skript und Programm."],
+  {k:"aufgabe",i:"square-pen",de:["Aufgabe","Was genau?","Erkläre den Unterschied zwischen Skript und Programm."],
                en:["Task","What exactly?","Explain the difference between a script and a program."]},
-  {k:"format",de:["Format","In welcher Form?","Höchstens acht Sätze, ein Beispiel."],
+  {k:"format",i:"layers",de:["Format","In welcher Form?","Höchstens acht Sätze, ein Beispiel."],
               en:["Format","In what form?","At most eight sentences, one example."]},
-  {k:"pruef",de:["Prüfauftrag","Woran erkenne ich Fehler?","Markiere prüfpflichtige Aussagen und nenne, wer die Quelle verantwortet."],
+  {k:"pruef",i:"shield-check",de:["Prüfauftrag","Woran erkenne ich Fehler?","Markiere prüfpflichtige Aussagen und nenne, wer die Quelle verantwortet."],
              en:["Check request","How do I spot errors?","Mark statements I need to verify and say who is responsible for each source."]}
 ];
 
+const VGRUPPEN = { schreiben:"petrol", pruefung:"gruen" };
 const VORLAGEN = [
-  {g:"schreiben",de:"Forschungsfrage schärfen",en:"Sharpen your research question",
+  {g:"schreiben",i:"signpost",de:"Forschungsfrage schärfen",en:"Sharpen your research question",
    tde:"Bewerte meine Forschungsfrage: „{frage}“. Ist sie präzise, forschbar und relevant? Wie könnte ich sie verbessern?",
    ten:"Assess my research question: “{frage}”. Is it precise, researchable and relevant? How could I improve it?"},
-  {g:"schreiben",de:"Suchbegriffe finden",en:"Find search terms",
+  {g:"schreiben",i:"search",de:"Suchbegriffe finden",en:"Find search terms",
    tde:"Welche Schlüsselbegriffe, Synonyme und verwandten Konzepte sollte ich für die Literaturrecherche zum Thema {thema} verwenden?",
    ten:"Which keywords, synonyms and related concepts should I use for a literature search on {thema}?"},
-  {g:"schreiben",de:"Recherchestrategie",en:"Research strategy",
+  {g:"schreiben",i:"compass",de:"Recherchestrategie",en:"Research strategy",
    tde:"Ich schreibe eine {arbeit} zum Thema {thema}. Hilf mir, eine Recherchestrategie zu entwickeln: zentrale Fragen, Schlüsselbegriffe, passende Datenbanken und Kriterien zur Bewertung von Quellen.",
    ten:"I am writing a {arbeit} on {thema}. Help me develop a research strategy: key questions, keywords, suitable databases and criteria for evaluating sources."},
-  {g:"schreiben",de:"Gliederung prüfen",en:"Check your outline",
+  {g:"schreiben",i:"list-checks",de:"Gliederung prüfen",en:"Check your outline",
    tde:"Meine Forschungsfrage lautet {frage}. Hier ist meine Gliederung: {gliederung}. Wo fehlt etwas, wo ist die Reihenfolge nicht logisch?",
    ten:"My research question is {frage}. Here is my outline: {gliederung}. What is missing, and where is the order not logical?"},
-  {g:"schreiben",de:"Argumentation prüfen",en:"Check your argument",
+  {g:"schreiben",i:"scale",de:"Argumentation prüfen",en:"Check your argument",
    tde:"Zu meiner These {these} habe ich diese Argumente gesammelt: {argumente}. Schlage eine logische Reihenfolge vor, nenne mögliche Gegenargumente und zeige Lücken in der Argumentation.",
    ten:"For my thesis {these} I have collected these arguments: {argumente}. Suggest a logical order, name possible counterarguments and show gaps in the reasoning."},
-  {g:"schreiben",de:"Kritisch gegenlesen",en:"Critical review",
+  {g:"schreiben",i:"search-check",de:"Kritisch gegenlesen",en:"Critical review",
    tde:"Hier ist ein Abschnitt meiner Arbeit: {abschnitt}. Lies ihn als kritische Gutachterin: Wo ist die Argumentation nicht schlüssig, wo fehlen Belege, welche Sichtweisen fehlen?",
    ten:"Here is a section of my paper: {abschnitt}. Read it as a critical reviewer: where is the argument not conclusive, where is evidence missing, which perspectives are missing?"},
-  {g:"schreiben",de:"Zeitplan",en:"Schedule",
+  {g:"schreiben",i:"clipboard-list",de:"Zeitplan",en:"Schedule",
    tde:"Erstelle einen realistischen Zeitplan für meine {arbeit} mit Abgabe am {datum}, von der Recherche bis zur Überarbeitung.",
    ten:"Create a realistic schedule for my {arbeit}, due on {datum}, from research to revision."},
-  {g:"pruefung",de:"Lernplan",en:"Study plan",
+  {g:"pruefung",i:"notebook-pen",de:"Lernplan",en:"Study plan",
    tde:"Ich bereite mich auf eine Prüfung zu {thema} vor. Erstelle mir die zehn wichtigsten Begriffe mit je einem Satz Erklärung, zwölf typische Prüfungsfragen und einen Lernplan für {tage} Tage mit Wiederholungen.",
    ten:"I am preparing for an exam on {thema}. Give me the ten most important terms with a one-sentence explanation each, twelve typical exam questions and a {tage}-day study plan with reviews."},
-  {g:"pruefung",de:"Antwortgerüst",en:"Answer framework",
+  {g:"pruefung",i:"layers",de:"Antwortgerüst",en:"Answer framework",
    tde:"Gib mir für {thema} ein Antwortgerüst: Definition (1 Satz), Einordnung (2 Sätze), Beispiel (1 Satz), Abgrenzung (1 Satz), typische Rückfrage mit Kurzantwort.",
    ten:"Give me an answer framework for {thema}: definition (1 sentence), context (2 sentences), example (1 sentence), distinction (1 sentence), a typical follow-up question with a short answer."},
-  {g:"pruefung",de:"Prüfung simulieren",en:"Simulate an oral exam",
+  {g:"pruefung",i:"message-circle-question-mark",de:"Prüfung simulieren",en:"Simulate an oral exam",
    tde:"Du bist Prüfer*in. Stelle mir eine Frage zu {thema} und warte auf meine Antwort. Gib dann zwei Punkte Feedback, eine schwierigere Rückfrage und eine sehr gute Musterantwort.",
    ten:"You are the examiner. Ask me one question on {thema} and wait for my answer. Then give two points of feedback, a harder follow-up question and a very good model answer."},
-  {g:"pruefung",de:"Karteikarten",en:"Flashcards",
+  {g:"pruefung",i:"book-a",de:"Karteikarten",en:"Flashcards",
    tde:"Erstelle 20 Karteikarten zu {thema}: vorne eine Prüfungsfrage, hinten 3–5 Stichpunkte für die Antwort und ein typischer Fehler.",
    ten:"Create 20 flashcards on {thema}: an exam question on the front, 3–5 bullet points for the answer and one typical mistake on the back."},
-  {g:"pruefung",de:"Lücken finden",en:"Find gaps",
+  {g:"pruefung",i:"scan-text",de:"Lücken finden",en:"Find gaps",
    tde:"Hier ist meine Antwortskizze: {stichworte}. Was fehlt inhaltlich, wo ist es zu vage, welche Rückfrage könnte kommen?",
    ten:"Here is my answer outline: {stichworte}. What is missing, where is it too vague, which follow-up question might come?"},
-  {g:"pruefung",de:"Vergleichen",en:"Compare",
+  {g:"pruefung",i:"link",de:"Vergleichen",en:"Compare",
    tde:"Vergleiche {a} und {b}: drei Gemeinsamkeiten, fünf Unterschiede, typische Anwendungen und eine häufige Prüfungsfalle.",
    ten:"Compare {a} and {b}: three similarities, five differences, typical applications and one common exam trap."}
 ];
-
 const FELDER = {
   frage:{de:["Forschungsfrage","Wie verändert KI das Lernen im ersten Semester?"],en:["Research question","How does AI change learning in the first semester?"]},
   thema:{de:["Thema","Datenschutz in sozialen Netzwerken"],en:["Topic","privacy in social networks"]},
@@ -287,75 +383,27 @@ const FELDER = {
 };
 const LANG_FELD = new Set(["gliederung","abschnitt","stichworte","argumente"]);
 
-const WISSEN = {
- de:`<div class="karte"><h2>Vier Strategien</h2><table>
-<tr><th>Strategie</th><th>Was sie bewirkt</th><th>Starthilfe</th></tr>
-<tr><td><b>Genaue Anweisung</b> (Zero-Shot)</td><td>präzisere Antwort durch klare Vorgaben</td><td>„Der Text soll … lang sein, die Struktur … haben und sich an … richten.“</td></tr>
-<tr><td><b>Mit Beispiel</b> (Few-Shot)</td><td>Antwort orientiert sich an einem guten Muster</td><td>„Orientiere dich an folgendem Beispiel: …“</td></tr>
-<tr><td><b>Schritt für Schritt</b> (Chain-of-Thought)</td><td>der Weg zur Antwort wird sichtbar und prüfbar</td><td>„Gehe Schritt für Schritt vor und erkläre, wie du zu deinem Ergebnis kommst.“</td></tr>
-<tr><td><b>Mit Rolle</b> (Role-Prompting)</td><td>Antwort aus einer bestimmten Perspektive</td><td>„Du bist kritische Gutachterin.“</td></tr></table></div>
-<div class="raster">
-<div class="karte"><h2>Fünf Tipps</h2><ol>
-<li><b>Genau sein:</b> Je klarer die Anforderung, desto brauchbarer die Antwort.</li>
-<li><b>Kontext geben:</b> Sagt, wofür ihr es braucht und was ihr schon wisst.</li>
-<li><b>In Schritten arbeiten:</b> Große Aufgaben in Teilschritte zerlegen.</li>
-<li><b>Nachschärfen:</b> Antwort lesen, Prompt verbessern, noch einmal fragen.</li>
-<li><b>Prüfen:</b> Jede Aussage und jede Quelle selbst nachprüfen. KI erfindet Quellen und DOIs.</li></ol></div>
-<div class="karte"><h2>Regeln für Studienleistungen</h2><ul>
-<li><b>Eure Leistung bleibt eure:</b> KI darf unterstützen. Die Analyse und das Urteil kommen von euch.</li>
-<li><b>Kennzeichnen:</b> Gebt an, welches Werkzeug ihr wofür genutzt habt.</li>
-<li><b>Datenschutz:</b> Keine personenbezogenen oder vertraulichen Daten in KI-Chats geben. Nutzt den KI-Chat eurer Hochschule.</li>
-<li>Es gelten die Regeln eures Moduls und eurer Prüfungsordnung.</li></ul></div></div>
-<div class="karte"><h2>Weiterlernen (HSD-Moodle)</h2><ul>
-<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4386">Wissenschaftlich Arbeiten mit KI</a> (DHBW). Dort heißen die Bausteine PASSD: dieselbe Idee.</li>
-<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4352">Einführung in die KI</a> (KI-Campus)</li></ul>
-<p>Beide mit Selbsteinschreibung, Anmeldung mit HSD-Kennung.</p></div>`,
- en:`<div class="karte"><h2>Four strategies</h2><table>
-<tr><th>Strategy</th><th>What it does</th><th>Starter</th></tr>
-<tr><td><b>Precise instruction</b> (zero-shot)</td><td>a more precise answer through clear requirements</td><td>“The text should be … long, follow the structure … and address …”</td></tr>
-<tr><td><b>With an example</b> (few-shot)</td><td>the answer follows a good model</td><td>“Follow this example: …”</td></tr>
-<tr><td><b>Step by step</b> (chain of thought)</td><td>the path to the answer becomes visible and checkable</td><td>“Go step by step and explain how you reach your result.”</td></tr>
-<tr><td><b>With a role</b> (role prompting)</td><td>an answer from a specific perspective</td><td>“You are a critical reviewer.”</td></tr></table></div>
-<div class="raster">
-<div class="karte"><h2>Five tips</h2><ol>
-<li><b>Be specific:</b> the clearer the request, the more useful the answer.</li>
-<li><b>Give context:</b> say what you need it for and what you already know.</li>
-<li><b>Work in steps:</b> break big tasks into smaller ones.</li>
-<li><b>Refine:</b> read the answer, improve the prompt, ask again.</li>
-<li><b>Check:</b> verify every statement and every source yourself. AI invents sources and DOIs.</li></ol></div>
-<div class="karte"><h2>Rules for coursework</h2><ul>
-<li><b>Your work stays yours:</b> AI may support you. The analysis and judgement are yours.</li>
-<li><b>Declare it:</b> state which tool you used and what for.</li>
-<li><b>Data protection:</b> do not enter personal or confidential data into AI chats. Use your university's AI chat.</li>
-<li>The rules of your module and your examination regulations apply.</li></ul></div></div>
-<div class="karte"><h2>Keep learning (HSD Moodle)</h2><ul>
-<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4386">Wissenschaftlich Arbeiten mit KI</a> (academic work with AI, DHBW, in German). Its PASSD scheme is the same idea as the five blocks.</li>
-<li><a href="https://mdl.hs-duesseldorf.de/course/view.php?id=4352">Einführung in die KI</a> (introduction to AI, KI-Campus, in German)</li></ul>
-<p>Both open for self-enrolment with your HSD account.</p></div>`
-};
-
-
 // Auswahl aus brain-methods.csv (bmad-toolbox, MIT), Texte für Studierende umformuliert
 const BS_ROLLEN = [
   {k:"moderation", de:["Moderation","Die KI fragt und treibt an. Die Ideen kommen von euch."], en:["Facilitator","The AI asks and pushes. The ideas come from you."]},
   {k:"partner", de:["Kreativpartner","Die KI moderiert und bringt eigene Ideen ein, jeweils gekennzeichnet."], en:["Creative partner","The AI facilitates and adds its own ideas, each one marked."]},
   {k:"allein", de:["Ideen für mich","Die KI führt die Sitzung allein durch und legt das Ergebnis vor."], en:["Ideas for me","The AI runs the session on its own and presents the result."]}
 ];
-const BS_GRUPPEN = {finden:{de:"Thema finden und schärfen",en:"Find and sharpen a topic"}, ideen:{de:"Ideen sammeln",en:"Collect ideas"}, pruefen:{de:"Prüfen und planen",en:"Check and plan"}};
+const BS_GRUPPEN = {finden:{f:"petrol",de:"Thema finden und schärfen",en:"Find and sharpen a topic"}, ideen:{f:"rot",de:"Ideen sammeln",en:"Collect ideas"}, pruefen:{f:"gruen",de:"Prüfen und planen",en:"Check and plan"}};
 const BS_TECHNIKEN = [
-  {g:"finden", de:["Fragensturm","Nur Fragen zum Thema sammeln und keine Antworten, bis klar ist, welche Frage sich wirklich lohnt."], en:["Question storming","Collect only questions about the topic and no answers until it is clear which question is really worth pursuing."]},
-  {g:"finden", de:["Fragenstern","Das Thema mit den W-Fragen löchern: wer, was, wo, wann, warum, wie. Erst alle Fragen, dann Antworten."], en:["Starbursting","Grill the topic with who, what, where, when, why and how. All questions first, answers later."]},
-  {g:"finden", de:["Wie könnten wir …?","Das Problem als Reihe von „Wie könnten wir …?“-Fragen fassen und zur schärfsten Frage Ideen entwickeln."], en:["How might we","Rephrase the problem as a set of “How might we …?” questions and develop ideas for the sharpest one."]},
-  {g:"finden", de:["Mindmap","Vom Thema aus verzweigen, jeder Ast bekommt Unteräste. Abschweifen ist erlaubt."], en:["Mind mapping","Branch out from the topic, every branch gets sub-branches. Tangents are allowed."]},
-  {g:"ideen", de:["Was-wäre-wenn","Eine Randbedingung nach der anderen aufheben: unbegrenzt Zeit, das Gegenteil gilt, das Problem ist weg. Was folgt daraus?"], en:["What if","Lift one constraint at a time: unlimited time, the opposite is true, the problem is gone. What follows?"]},
-  {g:"ideen", de:["Analogien","Fragen „Das ist wie was?“ und die Lösung aus dem anderen Bereich übertragen."], en:["Analogies","Ask “What is this like?” and transfer the solution from the other field."]},
-  {g:"ideen", de:["Umgekehrtes Brainstorming","Sammeln, wie das Vorhaben sicher scheitert, und jeden Punkt ins Gegenteil wenden."], en:["Reverse brainstorming","Collect ways to make the project fail for sure, then turn each one around."]},
-  {g:"ideen", de:["Schlechteste Idee","Absichtlich die schlechtesten Lösungen sammeln und fragen, was jede über die gute Lösung verrät."], en:["Worst possible idea","Collect the worst solutions on purpose and ask what each one reveals about a good one."]},
-  {g:"ideen", de:["Annahmen umkehren","Alle Annahmen auflisten, jede ins Gegenteil drehen und darauf eine Lösung bauen."], en:["Assumption reversal","List all assumptions, flip each one and build a solution on the reversed version."]},
-  {g:"pruefen", de:["Fünfmal Warum","Fünfmal nacheinander „Warum?“ fragen, bis die Ursache hinter dem Problem sichtbar wird."], en:["Five whys","Ask “Why?” five times in a row until the cause behind the problem becomes visible."]},
-  {g:"pruefen", de:["Sechs Denkhüte","Das Vorhaben nacheinander aus sechs Blickwinkeln betrachten: Fakten, Gefühle, Nutzen, Risiken, neue Ideen, Vorgehen."], en:["Six thinking hats","Look at the project from six angles in turn: facts, feelings, benefits, risks, new ideas, process."]},
-  {g:"pruefen", de:["Walt-Disney-Methode","Die Idee nacheinander als Träumer, Realist und Kritiker ansehen."], en:["Disney method","Look at the idea as dreamer, realist and critic in turn."]},
-  {g:"pruefen", de:["Rückwärtsplanung","Das fertige Ergebnis genau beschreiben und von dort rückwärts bis zum ersten Schritt planen."], en:["Backcasting","Describe the finished result in detail and plan backwards from there to the first step."]}
+  {g:"finden", b:"Question Storming", de:["Fragensturm","Nur Fragen zum Thema sammeln und keine Antworten, bis klar ist, welche Frage sich wirklich lohnt."], en:["Question storming","Collect only questions about the topic and no answers until it is clear which question is really worth pursuing."]},
+  {g:"finden", b:"Starbursting", de:["Fragenstern","Das Thema mit den W-Fragen löchern: wer, was, wo, wann, warum, wie. Erst alle Fragen, dann Antworten."], en:["Starbursting","Grill the topic with who, what, where, when, why and how. All questions first, answers later."]},
+  {g:"finden", b:"How Might We", de:["Wie könnten wir …?","Das Problem als Reihe von „Wie könnten wir …?“-Fragen fassen und zur schärfsten Frage Ideen entwickeln."], en:["How might we","Rephrase the problem as a set of “How might we …?” questions and develop ideas for the sharpest one."]},
+  {g:"finden", b:"Mind Mapping", de:["Mindmap","Vom Thema aus verzweigen, jeder Ast bekommt Unteräste. Abschweifen ist erlaubt."], en:["Mind mapping","Branch out from the topic, every branch gets sub-branches. Tangents are allowed."]},
+  {g:"ideen", b:"What If Scenarios", de:["Was-wäre-wenn","Eine Randbedingung nach der anderen aufheben: unbegrenzt Zeit, das Gegenteil gilt, das Problem ist weg. Was folgt daraus?"], en:["What if","Lift one constraint at a time: unlimited time, the opposite is true, the problem is gone. What follows?"]},
+  {g:"ideen", b:"Analogical Thinking", de:["Analogien","Fragen „Das ist wie was?“ und die Lösung aus dem anderen Bereich übertragen."], en:["Analogies","Ask “What is this like?” and transfer the solution from the other field."]},
+  {g:"ideen", b:"Reverse Brainstorming", de:["Umgekehrtes Brainstorming","Sammeln, wie das Vorhaben sicher scheitert, und jeden Punkt ins Gegenteil wenden."], en:["Reverse brainstorming","Collect ways to make the project fail for sure, then turn each one around."]},
+  {g:"ideen", b:"Worst Possible Idea", de:["Schlechteste Idee","Absichtlich die schlechtesten Lösungen sammeln und fragen, was jede über die gute Lösung verrät."], en:["Worst possible idea","Collect the worst solutions on purpose and ask what each one reveals about a good one."]},
+  {g:"ideen", b:"Assumption Reversal", de:["Annahmen umkehren","Alle Annahmen auflisten, jede ins Gegenteil drehen und darauf eine Lösung bauen."], en:["Assumption reversal","List all assumptions, flip each one and build a solution on the reversed version."]},
+  {g:"pruefen", b:"Five Whys", de:["Fünfmal Warum","Fünfmal nacheinander „Warum?“ fragen, bis die Ursache hinter dem Problem sichtbar wird."], en:["Five whys","Ask “Why?” five times in a row until the cause behind the problem becomes visible."]},
+  {g:"pruefen", b:"Six Thinking Hats", de:["Sechs Denkhüte","Das Vorhaben nacheinander aus sechs Blickwinkeln betrachten: Fakten, Gefühle, Nutzen, Risiken, neue Ideen, Vorgehen."], en:["Six thinking hats","Look at the project from six angles in turn: facts, feelings, benefits, risks, new ideas, process."]},
+  {g:"pruefen", b:"Disney Method", de:["Walt-Disney-Methode","Die Idee nacheinander als Träumer, Realist und Kritiker ansehen."], en:["Disney method","Look at the idea as dreamer, realist and critic in turn."]},
+  {g:"pruefen", b:"Backcasting", de:["Rückwärtsplanung","Das fertige Ergebnis genau beschreiben und von dort rückwärts bis zum ersten Schritt planen."], en:["Backcasting","Describe the finished result in detail and plan backwards from there to the first step."]}
 ];
 const BS_BSP = {de:["z. B. Thema für meine Hausarbeit in Medienpsychologie","z. B. drei Fragestellungen, die ich bis Freitag mit meiner Betreuerin bespreche"],
                 en:["e.g. a topic for my media psychology term paper","e.g. three research questions to discuss with my supervisor by Friday"]};
@@ -393,23 +441,165 @@ const BS_PROMPT = {
    start_offen:"First ask me about whatever is still open above and only start after my answer.",
    start_dialog:"Confirm topic and goal in one sentence, then start with the first technique.", start:"Start now."}
 };
-const bs = {rolle:"moderation", gewaehlt:new Set()};
 
+const STRATEGIEN = [
+  {i:"target", f:"petrol", de:["Genaue Anweisung","Zero-Shot","Präzisere Antwort durch klare Vorgaben.","„Der Text soll … lang sein, die Struktur … haben und sich an … richten.“"],
+   en:["Precise instruction","zero-shot","A more precise answer through clear requirements.","“The text should be … long, follow the structure … and address …”"]},
+  {i:"copy", f:"rot", de:["Mit Beispiel","Few-Shot","Die Antwort orientiert sich an einem guten Muster.","„Orientiere dich an folgendem Beispiel: …“"],
+   en:["With an example","few-shot","The answer follows a good model.","“Follow this example: …”"]},
+  {i:"list-checks", f:"gruen", de:["Schritt für Schritt","Chain-of-Thought","Der Weg zur Antwort wird sichtbar und prüfbar.","„Gehe Schritt für Schritt vor und erkläre, wie du zu deinem Ergebnis kommst.“"],
+   en:["Step by step","chain of thought","The path to the answer becomes visible and checkable.","“Go step by step and explain how you reach your result.”"]},
+  {i:"users", f:"petrol", de:["Mit Rolle","Role-Prompting","Eine Antwort aus einer bestimmten Perspektive.","„Du bist kritische Gutachterin.“"],
+   en:["With a role","role prompting","An answer from a specific perspective.","“You are a critical reviewer.”"]}
+];
+const TIPPS = {
+  de:[["Genau sein","Je klarer die Anforderung, desto brauchbarer die Antwort."],["Kontext geben","Sagt, wofür ihr es braucht und was ihr schon wisst."],["In Schritten arbeiten","Große Aufgaben in Teilschritte zerlegen."],["Nachschärfen","Antwort lesen, Prompt verbessern, noch einmal fragen."],["Prüfen","Jede Aussage und jede Quelle selbst nachprüfen. KI erfindet Quellen und DOIs."]],
+  en:[["Be specific","The clearer the request, the more useful the answer."],["Give context","Say what you need it for and what you already know."],["Work in steps","Break big tasks into smaller ones."],["Refine","Read the answer, improve the prompt, ask again."],["Check","Verify every statement and every source yourself. AI invents sources and DOIs."]]
+};
+const REGELN = {
+  de:[["pen-tool","Eure Leistung bleibt eure","KI darf unterstützen. Die Analyse und das Urteil kommen von euch."],["file-check","Kennzeichnen","Gebt an, welches Werkzeug ihr wofür genutzt habt."],["shield-check","Datenschutz","Keine personenbezogenen oder vertraulichen Daten in KI-Chats geben. Nutzt den KI-Chat eurer Hochschule."],["scale","Regeln des Moduls","Es gelten die Vorgaben eures Moduls und eurer Prüfungsordnung."]],
+  en:[["pen-tool","Your work stays yours","AI may support you. The analysis and judgement are yours."],["file-check","Declare it","State which tool you used and what for."],["shield-check","Data protection","Do not enter personal or confidential data into AI chats. Use your university's AI chat."],["scale","Module rules","The rules of your module and your examination regulations apply."]]
+};
+const KURSE = [
+  {u:"https://mdl.hs-duesseldorf.de/course/view.php?id=4386", i:"graduation-cap", de:["Wissenschaftlich Arbeiten mit KI","DHBW. Dort heißen die Bausteine PASSD: dieselbe Idee."], en:["Wissenschaftlich Arbeiten mit KI","Academic work with AI (DHBW). Its PASSD scheme is the same idea as the five blocks."]},
+  {u:"https://mdl.hs-duesseldorf.de/course/view.php?id=4352", i:"brain", de:["Einführung in die KI","KI-Campus."], en:["Einführung in die KI","Introduction to AI (KI-Campus)."]}
+];
+
+let lang = "de";
+try { lang = localStorage.getItem("pt-lang") || ((navigator.language || "de").toLowerCase().startsWith("de") ? "de" : "en"); } catch (e) {}
+const werte = {}, vwerte = {};
+let filter = "alle", aktiv = -1;
+const bs = { rolle:"moderation", gewaehlt:new Set() };
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sanft = () => matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+function setzeSprache(l){
+  lang = l; try { localStorage.setItem("pt-lang", l); } catch (e) {}
+  document.documentElement.lang = l;
+  document.title = T[l].titel;
+  document.querySelectorAll("[data-t]").forEach(e => { const v = T[l][e.dataset.t]; if (typeof v === "string") e.textContent = v; });
+  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  document.querySelector(".werkzeuge .seg").setAttribute("aria-label", T[l].sprache);
+  document.querySelector("nav.reiter").setAttribute("aria-label", T[l].bereiche);
+  themaKnopf();
+  baueBausteine(); baueVorlagen(); baueBrainstorming(); baueWissen();
+}
+
+function themaIstDunkel(){
+  const t = document.documentElement.dataset.theme;
+  return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function themaKnopf(){
+  const d = themaIstDunkel(), k = $("#thema-knopf");
+  k.innerHTML = svgI(d ? "sun" : "moon");
+  k.setAttribute("aria-label", d ? T[lang].hell : T[lang].dunkel);
+  k.title = k.getAttribute("aria-label");
+}
+$("#thema-knopf").onclick = () => {
+  const neu = themaIstDunkel() ? "light" : "dark";
+  document.documentElement.dataset.theme = neu;
+  try { localStorage.setItem("pt-theme", neu); } catch (e) {}
+  themaKnopf();
+};
+
+let toastUhr;
+function melde(text, fehler){
+  const t = $("#toast"); t.textContent = text; t.classList.toggle("fehler", !!fehler); t.classList.add("zeigen");
+  clearTimeout(toastUhr); toastUhr = setTimeout(() => t.classList.remove("zeigen"), 3200);
+}
+async function kopiere(text){
+  if (!text) { melde(T[lang].leer, true); return; }
+  try { await navigator.clipboard.writeText(text); melde(T[lang].kopiert); }
+  catch (e) { melde(T[lang].nicht_kopiert, true); }
+}
+
+/* Prompt bauen */
+function baueBausteine(){
+  $("#bausteine").innerHTML = BAUSTEINE.map(b => {
+    const [name, frage, bsp] = b[lang];
+    return `<div class="zeile"><div style="display:flex;gap:10px;align-items:center">${ico(b.i)}<label class="glabel" for="b-${b.k}" style="padding:0">${name}</label></div>
+      <div><p class="frage">${frage}</p><textarea class="feld" id="b-${b.k}" data-k="${b.k}" rows="2" placeholder="${esc(bsp)}">${esc(werte[b.k] || "")}</textarea></div></div>`;
+  }).join("");
+  $("#bausteine").querySelectorAll("textarea").forEach(t => t.addEventListener("input", e => { werte[e.target.dataset.k] = e.target.value; bauErgebnis(); }));
+  bauErgebnis();
+}
+const bauText = () => BAUSTEINE.map(b => (werte[b.k] || "").trim()).filter(Boolean).join("\n\n");
+function bauErgebnis(){ const t = bauText(); const e = $("#bau-ergebnis"); e.textContent = t || T[lang].leer; e.classList.toggle("leise", !t); }
+
+/* Vorlagen */
+const felderVon = v => [...new Set([...v.tde.matchAll(/\{(\w+)\}/g)].map(m => m[1]))];
+function vorlageText(v, markieren){
+  return (lang === "de" ? v.tde : v.ten).split(/(\{\w+\})/).map(p => {
+    const m = p.match(/^\{(\w+)\}$/);
+    if (!m) return markieren ? esc(p) : p;
+    const w = (vwerte[m[1]] || "").trim();
+    if (w) return markieren ? esc(w) : w;
+    const name = FELDER[m[1]][lang][0];
+    return markieren ? `<span class="platz">[${esc(name)}]</span>` : `[${name}]`;
+  }).join("");
+}
+function baueVorlagen(){
+  const f = $("#filter");
+  f.setAttribute("aria-label", "Filter");
+  f.innerHTML = ["alle","schreiben","pruefung"].map(k => `<button type="button" class="chip ${k===filter ? "" : "aus"}" style="--cc:${k==="alle" ? "#333" : CHIPFARBE[VGRUPPEN[k]]}" data-f="${k}" aria-pressed="${k===filter}">${T[lang][k]}</button>`).join("");
+  f.querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.f; baueVorlagen(); });
+  const gruppen = filter === "alle" ? ["schreiben","pruefung"] : [filter];
+  $("#liste").innerHTML = gruppen.map(g => {
+    const vs = VORLAGEN.map((v,i) => [v,i]).filter(([v]) => v.g === g);
+    return `<section class="gruppe" style="--c:${FARBE[VGRUPPEN[g]]}"><h2>${T[lang][g]}<span class="cnt">${vs.length}</span></h2><div class="grid" style="grid-template-columns:1fr">` +
+      vs.map(([v,i]) => `<button type="button" class="kachel" data-i="${i}" aria-current="${i===aktiv}">${ico(v.i)}<span><span class="n">${v[lang]}</span><span class="d">${esc(vorlageText(v,false)).slice(0,90)}…</span></span></button>`).join("") + `</div></section>`;
+  }).join("");
+  $("#liste").querySelectorAll(".kachel").forEach(b => b.onclick = () => {
+    aktiv = +b.dataset.i; baueVorlagen();
+    if (matchMedia("(max-width:820px)").matches) $("#vorlage").scrollIntoView({behavior:sanft(), block:"start"});
+    const erstes = $("#vorlage").querySelector("input,textarea"); if (erstes) erstes.focus({preventScroll:true});
+  });
+  zeigeVorlage();
+}
+function zeigeVorlage(){
+  const z = $("#vorlage");
+  if (aktiv < 0) { z.innerHTML = `<div class="kopf2"><h2>${T[lang].ausfuellen}</h2></div><p class="leise">${T[lang].waehlen}</p>`; return; }
+  const v = VORLAGEN[aktiv];
+  z.style.setProperty("--c", FARBE[VGRUPPEN[v.g]]);
+  z.innerHTML = `<div style="display:flex;gap:12px;align-items:center;margin-bottom:6px">${ico(v.i)}<div><span class="glabel" style="color:var(--c)">${T[lang][v.g]}</span><h2 style="margin:0;font-size:20px">${v[lang]}</h2></div></div>` +
+    felderVon(v).map(k => { const [name, bsp] = FELDER[k][lang];
+      return `<label class="glabel" for="v-${k}" style="display:block;margin:14px 0 6px">${name}</label>` + (LANG_FELD.has(k)
+        ? `<textarea class="feld" id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}">${esc(vwerte[k] || "")}</textarea>`
+        : `<input class="feld" id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}" value="${esc(vwerte[k] || "")}">`); }).join("") +
+    `<div class="kopf2" style="margin-top:18px"><h2>${T[lang].euer_prompt}</h2><span class="leise">${T[lang].hinweis_platz}</span></div>
+     <div class="ergebnis" id="v-ergebnis"></div>
+     <div class="bar" style="margin-top:12px"><button type="button" class="kopieren" id="v-kopieren">${svgI("clipboard-list")}<span>${T[lang].kopieren}</span></button></div>`;
+  z.querySelectorAll("input,textarea").forEach(e => e.addEventListener("input", ev => { vwerte[ev.target.dataset.k] = ev.target.value; $("#v-ergebnis").innerHTML = vorlageText(v, true); }));
+  $("#v-ergebnis").innerHTML = vorlageText(v, true);
+  $("#v-kopieren").onclick = () => kopiere(vorlageText(v, false));
+}
+
+/* Brainstorming */
 function baueBrainstorming(){
   $("#bs-thema").placeholder = BS_BSP[lang][0];
   $("#bs-ziel").placeholder = BS_BSP[lang][1];
-  $("#bs-rollen").innerHTML = BS_ROLLEN.map(r => `<label class="wahl"><input type="radio" name="bs-rolle" value="${r.k}" ${r.k===bs.rolle?"checked":""}><div><b>${r[lang][0]}</b><span>${r[lang][1]}</span></div></label>`).join("");
-  $("#bs-techniken").innerHTML = Object.keys(BS_GRUPPEN).map(g =>
-    `<h3 class="tgruppe">${BS_GRUPPEN[g][lang]}</h3>` + BS_TECHNIKEN.map((t,i) => t.g!==g ? "" :
-      `<label class="wahl"><input type="checkbox" value="${i}" ${bs.gewaehlt.has(i)?"checked":""}><div><b>${t[lang][0]}</b><span>${t[lang][1]}</span></div></label>`).join("")).join("");
-  $("#bs-rollen").querySelectorAll("input").forEach(e => e.onchange = () => { bs.rolle = e.value; bsErgebnis(); });
+  $("#bs-rollen").innerHTML = BS_ROLLEN.map(r => `<button type="button" role="radio" aria-checked="${r.k===bs.rolle}" aria-pressed="${r.k===bs.rolle}" data-k="${r.k}" tabindex="${r.k===bs.rolle ? 0 : -1}">${r[lang][0]}</button>`).join("");
+  const knoepfe = [...$("#bs-rollen").querySelectorAll("button")];
+  knoepfe.forEach((b,i) => {
+    b.onclick = () => { bs.rolle = b.dataset.k; baueBrainstorming(); $(`#bs-rollen [data-k="${bs.rolle}"]`).focus(); };
+    b.onkeydown = e => { if (["ArrowRight","ArrowLeft"].includes(e.key)) { e.preventDefault(); knoepfe[(i + (e.key === "ArrowRight" ? 1 : knoepfe.length - 1)) % knoepfe.length].click(); } };
+  });
+  $("#bs-hint").textContent = BS_ROLLEN.find(r => r.k === bs.rolle)[lang][1];
+  $("#bs-chips").innerHTML = Object.entries(BS_GRUPPEN).map(([g, d]) => `<button type="button" class="chip" style="--cc:${CHIPFARBE[d.f]}" data-g="${g}">${d[lang]}</button>`).join("");
+  $("#bs-chips").querySelectorAll("button").forEach(b => b.onclick = () => document.getElementById("bs-g-" + b.dataset.g).scrollIntoView({behavior:sanft(), block:"start"}));
+  $("#bs-techniken").innerHTML = Object.entries(BS_GRUPPEN).map(([g, d]) => {
+    const ts = BS_TECHNIKEN.map((t,i) => [t,i]).filter(([t]) => t.g === g);
+    return `<section class="gruppe" id="bs-g-${g}" style="--c:${FARBE[d.f]};scroll-margin-top:16px"><h2>${d[lang]}<span class="cnt">${ts.length}</span></h2><div class="grid">` +
+      ts.map(([t,i]) => `<label class="kachel"><input type="checkbox" value="${i}" ${bs.gewaehlt.has(i) ? "checked" : ""}>${bico(t.b)}<span><span class="n">${t[lang][0]}</span><span class="d">${t[lang][1]}</span></span></label>`).join("") + `</div></section>`;
+  }).join("");
   $("#bs-techniken").querySelectorAll("input").forEach(e => e.onchange = () => { e.checked ? bs.gewaehlt.add(+e.value) : bs.gewaehlt.delete(+e.value); bsErgebnis(); });
   bsErgebnis();
 }
 function bsText(){
   const P = BS_PROMPT[lang], thema = $("#bs-thema").value.trim(), ziel = $("#bs-ziel").value.trim();
   const dialog = bs.rolle !== "allein";
-  const techs = [...bs.gewaehlt].sort((a,b) => a-b).map(i => BS_TECHNIKEN[i][lang]);
+  const techs = [...bs.gewaehlt].sort((a,b) => a - b).map(i => BS_TECHNIKEN[i][lang]);
   const L = [P.einl, "", P.thema + (thema || P.offen), P.ziel + (ziel || P.offen), "", P.rolle + P.rollen[bs.rolle], ""];
   if (techs.length) { L.push(P.tech); techs.forEach((t,i) => L.push(`${i+1}. ${t[0]}: ${t[1]}`)); } else L.push(P.keine);
   L.push("", P.regeln, P.r_viel);
@@ -420,90 +610,27 @@ function bsText(){
 }
 function bsErgebnis(){
   $("#bs-ergebnis").textContent = bsText();
-  $("#bs-zahl").textContent = T[lang].bs_zahl(bs.gewaehlt.size);
+  $("#bs-zahl").innerHTML = T[lang].bs_zahl(bs.gewaehlt.size);
 }
 
-let lang = localStorage.getItem("pt-lang") || ((navigator.language||"de").toLowerCase().startsWith("de") ? "de" : (navigator.language ? "en" : "de"));
-const werte = {};          // Eingaben Baukasten
-const vwerte = {};         // Eingaben Vorlagen
-let filter = "alle", aktiv = 0;
-const $ = s => document.querySelector(s);
-const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-
-function setzeSprache(l){
-  lang = l; localStorage.setItem("pt-lang", l);
-  document.documentElement.lang = l;
-  document.title = T[l].titel;
-  document.querySelectorAll("[data-t]").forEach(e => { const v = T[l][e.dataset.t]; if (v) e.textContent = v; });
-  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
-  document.querySelector(".sprache").setAttribute("aria-label", T[l].sprache);
-  baueBausteine(); baueVorlagen(); baueBrainstorming(); $("#wissen-inhalt").innerHTML = WISSEN[l];
+/* Gut zu wissen */
+function baueWissen(){
+  $("#wissen-inhalt").innerHTML =
+    `<section class="gruppe" style="--c:var(--petrol)"><h2>${T[lang].w_strat}</h2><div class="grid">` +
+      STRATEGIEN.map(s => `<div class="kachel strat" style="--c:${FARBE[s.f]};cursor:default">${ico(s.i)}<span><span class="n">${s[lang][0]} <span class="leise">(${s[lang][1]})</span></span><span class="d">${s[lang][2]}</span><span class="zitat">${s[lang][3]}</span></span></div>`).join("") + `</div></section>` +
+    `<div class="zweispaltig" style="grid-template-columns:1fr 1fr;margin-bottom:26px">
+      <div class="karte"><div class="kopf2"><h2>${T[lang].w_tipps}</h2></div><ol class="tipps">${TIPPS[lang].map(t => `<li><span><b>${t[0]}:</b> ${t[1]}</span></li>`).join("")}</ol></div>
+      <div class="karte"><div class="kopf2"><h2>${T[lang].w_regeln}</h2></div><div class="regeln">${REGELN[lang].map(r => `<div style="--c:var(--rot-text)">${ico(r[0])}<span><b>${r[1]}.</b> ${r[2]}</span></div>`).join("")}</div></div>
+    </div>` +
+    `<section class="gruppe" style="--c:var(--rot-text)"><h2>${T[lang].w_weiter}</h2><div class="grid">` +
+      KURSE.map(k => `<a class="kachel kurs" href="${k.u}">${ico(k.i)}<span><span class="n">${k[lang][0]} ›</span><span class="d">${k[lang][1]}</span></span></a>`).join("") +
+    `</div><p class="leise">${T[lang].w_weiter_p}</p></section>`;
 }
 
-function baueBausteine(){
-  $("#bausteine").innerHTML = BAUSTEINE.map((b,i) => {
-    const [name, frage, bsp] = b[lang];
-    return `<div class="baustein"><span class="nr" aria-hidden="true">${i+1}</span><div>
-      <label for="b-${b.k}" style="margin-top:0">${name} <small>${frage}</small></label>
-      <textarea id="b-${b.k}" data-k="${b.k}" rows="2" placeholder="${esc(bsp)}">${esc(werte[b.k]||"")}</textarea></div></div>`;
-  }).join("");
-  $("#bausteine").querySelectorAll("textarea").forEach(t => t.addEventListener("input", e => { werte[e.target.dataset.k] = e.target.value; bauErgebnis(); }));
-  bauErgebnis();
-}
-function bauText(){ return BAUSTEINE.map(b => (werte[b.k]||"").trim()).filter(Boolean).join("\n\n"); }
-function bauErgebnis(){
-  const t = bauText();
-  $("#bau-ergebnis").textContent = t || T[lang].leer;
-}
-
-function felderVon(v){ return [...new Set([...(v.tde.matchAll(/\{(\w+)\}/g))].map(m => m[1]))]; }
-function vorlageText(v, markieren){
-  const roh = lang === "de" ? v.tde : v.ten;
-  const teile = roh.split(/(\{\w+\})/);
-  return teile.map(p => {
-    const m = p.match(/^\{(\w+)\}$/);
-    if (!m) return markieren ? esc(p) : p;
-    const w = (vwerte[m[1]]||"").trim();
-    if (w) return markieren ? esc(w) : w;
-    const name = FELDER[m[1]][lang][0];
-    return markieren ? `<span class="platz">[${esc(name)}]</span>` : `[${name}]`;
-  }).join("");
-}
-function baueVorlagen(){
-  $("#filter").setAttribute("aria-label", "Filter");
-  $("#filter").innerHTML = ["alle","schreiben","pruefung"].map(f => `<button type="button" data-f="${f}" aria-pressed="${f===filter}">${T[lang][f]}</button>`).join("");
-  $("#filter").querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.f; const erste = VORLAGEN.findIndex(v => filter==="alle" || v.g===filter); aktiv = erste; baueVorlagen(); });
-  $("#liste").innerHTML = VORLAGEN.map((v,i) => (filter==="alle"||v.g===filter) ?
-    `<button type="button" data-i="${i}" aria-current="${i===aktiv}"><b>${v[lang]}</b><span class="art">${T[lang][v.g]}</span></button>` : "").join("");
-  $("#liste").querySelectorAll("button").forEach(b => b.onclick = () => { aktiv = +b.dataset.i; baueVorlagen(); $("#vorlage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"}); });
-  zeigeVorlage();
-}
-function zeigeVorlage(){
-  const v = VORLAGEN[aktiv];
-  const felder = felderVon(v);
-  $("#vorlage").innerHTML = `<h2>${v[lang]}</h2><h3>${T[lang].ausfuellen}</h3>` +
-    felder.map(k => { const [name, bsp] = FELDER[k][lang]; const lang_ = LANG_FELD.has(k);
-      return `<label for="v-${k}">${name}</label>` + (lang_ ?
-        `<textarea id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}">${esc(vwerte[k]||"")}</textarea>` :
-        `<input id="v-${k}" data-k="${k}" placeholder="${esc(bsp)}" value="${esc(vwerte[k]||"")}">`); }).join("") +
-    `<h3 style="margin-top:1rem">${T[lang].euer_prompt}</h3><div class="ergebnis" id="v-ergebnis"></div>
-     <p class="meldung" style="margin:0 0 .5rem">${T[lang].hinweis_platz}</p>
-     <div class="aktionen"><button type="button" class="haupt" id="v-kopieren">${T[lang].kopieren}</button><span class="meldung" id="v-meldung" role="status"></span></div>`;
-  $("#vorlage").querySelectorAll("input,textarea").forEach(e => e.addEventListener("input", ev => { vwerte[ev.target.dataset.k] = ev.target.value; $("#v-ergebnis").innerHTML = vorlageText(v, true); }));
-  $("#v-ergebnis").innerHTML = vorlageText(v, true);
-  $("#v-kopieren").onclick = () => kopiere(vorlageText(v, false), "#v-meldung");
-}
-
-async function kopiere(text, ziel){
-  const m = $(ziel);
-  if (!text) { m.textContent = T[lang].leer; return; }
-  try { await navigator.clipboard.writeText(text); m.textContent = T[lang].kopiert; }
-  catch { m.textContent = T[lang].nicht_kopiert; }
-  setTimeout(() => { m.textContent = ""; }, 4000);
-}
-
-// Reiter mit Pfeiltasten
+/* Reiter */
 const tabs = [...document.querySelectorAll('[role=tab]')];
+tabs.forEach(t => t.insertAdjacentHTML("afterbegin", svgI(t.dataset.icon)));
+document.querySelectorAll(".kopieren[data-icon]").forEach(b => b.insertAdjacentHTML("afterbegin", svgI(b.dataset.icon)));
 function waehle(t, fokus){
   tabs.forEach(x => { const an = x === t; x.setAttribute("aria-selected", an); x.tabIndex = an ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !an; });
   if (fokus) t.focus();
@@ -517,9 +644,10 @@ const start = tabs.find(t => "#" + t.id.slice(2) === location.hash); if (start) 
 
 document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => setzeSprache(b.dataset.lang));
 ["#bs-thema","#bs-ziel"].forEach(id => $(id).addEventListener("input", bsErgebnis));
-$("#bs-kopieren").onclick = () => kopiere(bsText(), "#bs-meldung");
-$("#bau-kopieren").onclick = () => kopiere(bauText(), "#bau-meldung");
+$("#bs-kopieren").onclick = () => kopiere(bsText());
+$("#bau-kopieren").onclick = () => kopiere(bauText());
 $("#bau-leeren").onclick = () => { for (const k in werte) delete werte[k]; baueBausteine(); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themaKnopf);
 setzeSprache(lang);
 </script>
 </body>
